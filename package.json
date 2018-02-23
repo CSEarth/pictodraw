@@ -12,18 +12,20 @@
     "url": "git+https://github.com/wupenghe92/cloud-penguin.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "",
   "bugs": {
     "url": "https://github.com/CSEarth/pictodraw.git"
   },
   "homepage": "https://github.com/CSEarth/pictodraw.git",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
     "nodemon": "^1.15.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "socket.io": "^2.0.4",
+    "ws": "^4.1.0"
   },
   "devDependencies": {
     "babel": "^6.23.0",
