@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-// import Canvas from './CanvasBoard';
+import Canvas from './CanvasBoard';
 // import MessageBox from './MessageBox';
 // import Users from './Users'
 
@@ -11,7 +11,7 @@ class App extends Component {
 	render() {
 		return(
 			<div> 
-				// <Canvas /> 
+				<Canvas /> 
 				// <Users /> 
 				// <MessageBox />  
 			</div> 

@@ -8,7 +8,7 @@ const userController = require('./userController');
 
 const app = express();
 const server = http.Server(app);
-const socket = socketio(server);
+const io = socketio(server);
 
 //
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,17 +27,22 @@ app.get('/build/bundle.js', function (req, res) {
 });
 
 
-socket.on('connection', function (client) {
-  console.log(client.id);
-  client.emit('newswwww', { hello: 'world' });
-  client.on('test', function (data) {
+io.on('connection', function (socket) {
+  console.log(socket.id,'  joined in');
+  // io.emit('welcome', { hello: 'world' });// send  to all sockets that connect to '/'
+  socket.emit('welcome', { hello: 'world' });
+  socket.on('test', function (data) {
     console.log('test',data);
+    socket.emit('welcome2','hello again');
   });
-  client.on('canvas', (data) => {
+  socket.on('canvas', (data) => {
     userController.updataCanvas(data, client);
   });   //
-  client.on('message', (data) => {
+  socket.on('message', (data) => {
     userController.chatBox(data, client);
+  });
+  socket.on('disconnect', function (reason) {
+    console.log('disconneted  id=',socket.id, reason);
   });
 });
 
