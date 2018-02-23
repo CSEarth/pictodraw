@@ -1,5 +1,5 @@
 
-
+const canvas = require('./canvas')
 
 const io = require('socket.io-client');
 
