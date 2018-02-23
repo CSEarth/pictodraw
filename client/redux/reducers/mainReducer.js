@@ -2,33 +2,65 @@ import * as types from './../actions/actionTypes';
 
 
 const initialState = {
+  messages: [],
+  boardState: '', 
+  inputWord: '',
+  list: [{ 
+  user: Team Earth, 
+  drawer: false
+  }],
+} 
 
-};
+const users = (state = initialState, action) => {
+  switch(action.type){
+    case types.ADD_USER:
+    // penghe
+  }
+}
 
-const mainReducer = (state=initialState, action) => {
-  // const marketList = JSON.parse(JSON.stringify(state.marketList));
+const mainReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.SET_DRAWER:
 
+    let newList = state.list; 
+      for(let i = 0; i < newList.list.length; i++){
+        if(newList.list[i].user === action.newName)
+          newList.list[i].drawer === true; 
+        if(newList.list[i].user === action.oldName)
+          newList.list[i].drawer === false;
+      }
+
+      return{
+        ...state, 
+        list
+      }
+      
+    case types.ADD_MESSAGE:
+      // penghe
+      
+    case types.GUESS_INPUT:
+      let newWord = state.input;  
+
+      return{
+        ...state, 
+        boardState, 
+        inputWord: newWord, 
+        list
+      }
+
+    case types.BoardState; 
+      let newState = action.newBoard; 
 
       return {
-        ...state,
-        marketList,
-        lastMarketId,
-        totalMarkets,
-        newLocation: '',
+        ...state, 
+        boardState: newState, 
+        inputWord, 
+        list
       };
-
-    case types.SET_NEW_LOCATION:
-      return {
-        ...state,
-        newLocation: action.location,
-      };
-
 
 
     default:
-      return state;
+      return state; 
   }
 };
 
