@@ -27,8 +27,8 @@ class CanvasBoard extends Component {
 
   render() {
     return(
-      <div>
-        <>
+      <div id='canvasDiv'>
+
       </div>
     );
   }
