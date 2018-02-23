@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 const entry = [
-  './client/test.js'
+  './client/index.js'
 ];
 const output = {
   path: path.join(__dirname, '/build'),
