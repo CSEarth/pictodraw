@@ -16,28 +16,28 @@ const mainReducer = (state=initialState, action) => {
   // const marketList = JSON.parse(JSON.stringify(state.marketList));
   switch(action.type) {
     case types.SET_GUESS_INPUT:
-      return {
-        ...state,
-        guessInput: action.guess,
-      };
+      // console.log(action.guess);
+      return Object.assign({},
+        state,
+        {guessInput: action.guess}
+      );
 
     case types.SEND_GUESS:
+      console.log('sending-reducer');
       const input = document.getElementsByTagName('input').input;
       input.value = '';
-      return {
-        ...state,
-        guessInput: '',
-      };
+      return Object.assign({},
+        state,
+        {guessInput: ''}
+      );
 
     case types.ADD_MESSAGE:
       const messages = JSON.parse(JSON.stringify(state.messages));
-      messages.push('');
-      return {
-        ...state,
-        messages,
-      };
-
-
+      messages.push(action.message);
+      return Object.assign({},
+        state,
+        {messages}
+      );
 
     default:
       return state;

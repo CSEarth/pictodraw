@@ -30,8 +30,10 @@ const setGuessInput = () => {
 };
 
 const sendGuess = () => {
+	const guess = document.getElementsByTagName('input').input.value;
 	return {
 	  type: types.SEND_GUESS,
+		guess: guess,
 	}
 };
 

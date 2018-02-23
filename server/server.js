@@ -32,15 +32,19 @@ io.on('connection', function (socket) {
   connections.push(socket.id);
   // io.emit('welcome', { hello: 'world' });// send  to all sockets that connect to '/'
   socket.emit('welcome', { hello: 'world' });
-  socket.on('test', function (data) {
-    console.log('test',data);
-    socket.emit('welcome2','hello again');
-  });
+
   socket.on('canvas', (data) => {
-    userController.updataCanvas(data, client);
-  });   //
-  socket.on('message', (data) => {
-    userController.chatBox(data, client);
+    userController.updataCanvas(data, socket);
+  });
+  socket.on('guess', (guess) => {
+    // userController.chatBox(guess, socket);
+    const str = `user-${socket.id}: ${guess}`;
+    console.log(guess);
+    const message = {
+      user: socket.id,
+      message: guess
+    };
+    io.emit('message', message);
   });
   socket.on('disconnect', function (reason) {
     console.log('disconneted  id=',socket.id, reason);
@@ -48,10 +52,6 @@ io.on('connection', function (socket) {
     connections.splice(index, 1);
   });
 });
-
-
-
-
 
 
 

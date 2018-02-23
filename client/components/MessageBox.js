@@ -4,7 +4,6 @@ import * as actions from '../redux/actions/actions';
 
 
 const mapStateToProps = store => ({
-
   messages: store.messages,
 });
 
@@ -25,12 +24,12 @@ class MessageBox extends Component {
   render() {
 
     const allmessages = [];
-    for (let i=0; i<this.messages.length; i++) {
-      const str = `${this.messages[i].user}: ${this.messages[i].message}`;
+    for (let i=0; i<this.props.messages.length; i++) {
+      const str = `${this.props.messages[i].user}: ${this.props.messages[i].message}`;
       const message = (
           <ul key={`message${i}`}>
             {str}
-          <ul>
+          </ul>
         )
       allmessages.push(message);
     }
@@ -42,7 +41,7 @@ class MessageBox extends Component {
           <button onClick={this.props.sendGuess}>Send</button>
         </div>
         <div id='displayChat'>
-          <ul>{allmessages}<ul>
+          <ul>{allmessages}</ul>
         </div>
       </div>
     );

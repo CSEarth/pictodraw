@@ -1,6 +1,6 @@
 import React, { Component } from 'react'; 
-import Canvas from './CanvasBoard';
-// import MessageBox from './MessageBox';
+// import Canvas from './CanvasBoard';
+import MessageBox from './MessageBox';
 // import Users from './Users'
 
 class App extends Component {
@@ -11,12 +11,12 @@ class App extends Component {
 	render() {
 		return(
 			<div> 
-				// <Canvas /> 
-				// <Users /> 
 				<MessageBox />  
 			</div> 
 		);
 	}
 }
 
+// <Canvas /> 
+// <Users /> 
 export default App;
