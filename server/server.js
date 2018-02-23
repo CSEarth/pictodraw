@@ -19,7 +19,7 @@ app.use((req,res,next)=>{
 });
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname , './../client/test.html'));
+  res.sendFile(path.join(__dirname , './../index.html'));
 });
 
 app.get('/build/bundle.js', function (req, res) {

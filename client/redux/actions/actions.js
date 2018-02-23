@@ -8,7 +8,8 @@ const setDrawer = (name) => {
 
 const addMessage = (newMessage) => {
 	return {
-	type: types.ADD_MESSAGE
+		type: types.ADD_MESSAGE
+	}
 }
 
 
@@ -25,7 +26,7 @@ const guessInput = (input) => {
 	}
 }
 
-export {
+module.export = {
 	setDrawer,
 	addMessage,
 	addUser,
