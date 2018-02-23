@@ -4,30 +4,44 @@ const setDrawer = () => {
 	return {
 		type: types.SET_DRAWER
 	}
-}
+};
 
-const addMessage = () => {
+const addMessage = (message) => {
 	return {
-	type: types.ADD_MESSAGE
-}
+		type: types.ADD_MESSAGE,
+		message
+	}
+};
 
 
 const addUser = () => {
 	return {
 		type: types.ADD_USER
 	}
-}
+};
 
 
-const guessInput = () => {
+const setGuessInput = () => {
+	const guess = document.getElementsByTagName('input').input.value;
 	return {
-		type: types.GUESS_INPUT
+	  type: types.SET_GUESS_INPUT,
+	  guess: guess,
 	}
-}
+};
+
+const sendGuess = () => {
+	return {
+	  type: types.SEND_GUESS,
+	}
+};
+
+
+
 
 export {
 	setDrawer,
-	addMessage,
 	addUser,
-	guessInput
+	setGuessInput,
+	sendGuess,
+	addMessage,
 }

@@ -1,9 +1,16 @@
 import React from 'react'; 
 import ReactDOM from 'react-dom'; 
 import App from './components/App'; 
+import store from './redux/store';
+import socket from './socket';
 
-// mounting onto App
+
+socket(store);
+
+
 ReactDOM.render(
-  <App />, 
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );

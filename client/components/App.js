@@ -11,9 +11,9 @@ class App extends Component {
 	render() {
 		return(
 			<div> 
-				<Canvas /> 
+				// <Canvas /> 
 				// <Users /> 
-				// <MessageBox />  
+				<MessageBox />  
 			</div> 
 		);
 	}

@@ -10,7 +10,7 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
-//
+const connections = [];
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
 app.use((req,res,next)=>{
@@ -29,6 +29,7 @@ app.get('/build/bundle.js', function (req, res) {
 
 io.on('connection', function (socket) {
   console.log(socket.id,'  joined in');
+  connections.push(socket.id);
   // io.emit('welcome', { hello: 'world' });// send  to all sockets that connect to '/'
   socket.emit('welcome', { hello: 'world' });
   socket.on('test', function (data) {
@@ -43,6 +44,8 @@ io.on('connection', function (socket) {
   });
   socket.on('disconnect', function (reason) {
     console.log('disconneted  id=',socket.id, reason);
+    const index = connections.indexOf(socket.id);
+    connections.splice(index, 1);
   });
 });
 

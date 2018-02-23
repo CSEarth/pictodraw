@@ -5,7 +5,8 @@ import reducer from './reducers/mainReducer';
 // we are adding composeWithDevTools here to get easy access to the Redux dev tools
 const store = createStore(
   reducer,
-  composeWithDevTools()
+  composeWithDevTools(),
+  applyMiddleware()
 );
 
 export default store;
