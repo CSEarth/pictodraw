@@ -1587,25 +1587,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 
 
-<<<<<<< HEAD
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.addMessage = exports.sendGuess = exports.setGuessInput = exports.getUsers = exports.setDrawer = undefined;
-
-=======
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
 var _actionTypes = __webpack_require__(20);
 
 var types = _interopRequireWildcard(_actionTypes);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-<<<<<<< HEAD
-var setDrawer = function setDrawer() {
-=======
 var setDrawer = function setDrawer(name) {
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
 	return {
 		type: types.SET_DRAWER
 	};
@@ -1641,13 +1629,6 @@ var sendGuess = function sendGuess() {
 	};
 };
 
-<<<<<<< HEAD
-exports.setDrawer = setDrawer;
-exports.getUsers = getUsers;
-exports.setGuessInput = setGuessInput;
-exports.sendGuess = sendGuess;
-exports.addMessage = addMessage;
-=======
 var addClick = function addClick(x, y, dragging) {
 	return {
 		type: types.ADD_CLICK,
@@ -1657,15 +1638,24 @@ var addClick = function addClick(x, y, dragging) {
 	};
 };
 
+var addPixs = function addPixs(clickX, clickY, clickDrag) {
+	return {
+		type: types.ADD_PIXS,
+		clickX: clickX,
+		clickY: clickY,
+		clickDrag: clickDrag
+	};
+};
+
 module.exports = {
 	setDrawer: setDrawer,
 	getUsers: getUsers,
 	setGuessInput: setGuessInput,
 	sendGuess: sendGuess,
 	addMessage: addMessage,
-	addClick: addClick
+	addClick: addClick,
+	addPixs: addPixs
 };
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
 
 /***/ }),
 /* 13 */
@@ -2128,20 +2118,16 @@ var GET_USERS = "GET_USERS";
 var SET_GUESS_INPUT = "SET_GUESS_INPUT";
 var SEND_GUESS = "SEND_GUESS";
 var ADD_MESSAGE = "ADD_MESSAGE";
-<<<<<<< HEAD
-=======
 var ADD_CLICK = "ADD_CLICK";
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
+var ADD_PIXS = "ADD_PIXS";
 
 exports.SET_DRAWER = SET_DRAWER;
 exports.ADD_MESSAGE = ADD_MESSAGE;
 exports.GET_USERS = GET_USERS;
 exports.SET_GUESS_INPUT = SET_GUESS_INPUT;
 exports.SEND_GUESS = SEND_GUESS;
-<<<<<<< HEAD
-=======
 exports.ADD_CLICK = ADD_CLICK;
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
+exports.ADD_PIXS = ADD_PIXS;
 
 /***/ }),
 /* 21 */
@@ -24855,7 +24841,6 @@ function finalPropsSelectorFactory(dispatch, _ref2) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = verifySubselectors;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warning__ = __webpack_require__(18);
-<<<<<<< HEAD
 
 
 function verify(selector, methodName, displayName) {
@@ -24891,286 +24876,9 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _MessageBox = __webpack_require__(94);
-
-var _MessageBox2 = _interopRequireDefault(_MessageBox);
-
-var _Users = __webpack_require__(95);
-
-var _Users2 = _interopRequireDefault(_Users);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import Canvas from './CanvasBoard';
-
-
-var App = function (_Component) {
-	_inherits(App, _Component);
-
-	function App() {
-		_classCallCheck(this, App);
-
-		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
-	}
-
-	_createClass(App, [{
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(_Users2.default, null),
-				_react2.default.createElement(_MessageBox2.default, null)
-			);
-		}
-	}]);
-
-	return App;
-}(_react.Component);
-
-// <Canvas /> 
-// 
-
-
-exports.default = App;
-
-/***/ }),
-/* 93 */,
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(2);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(11);
-
-var _actions = __webpack_require__(12);
-
-var actions = _interopRequireWildcard(_actions);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var mapStateToProps = function mapStateToProps(store) {
-  return {
-    messages: store.messages
-  };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    setGuessInput: function setGuessInput() {
-      return dispatch(actions.setGuessInput());
-    },
-    sendGuess: function sendGuess() {
-      return dispatch(actions.sendGuess());
-    }
-  };
-};
-
-var MessageBox = function (_Component) {
-  _inherits(MessageBox, _Component);
-
-  function MessageBox(props) {
-    _classCallCheck(this, MessageBox);
-
-    return _possibleConstructorReturn(this, (MessageBox.__proto__ || Object.getPrototypeOf(MessageBox)).call(this, props));
-  }
-
-  _createClass(MessageBox, [{
-    key: 'render',
-    value: function render() {
-
-      var allmessages = [];
-      for (var i = 0; i < this.props.messages.length; i++) {
-        var str = this.props.messages[i].user + ': ' + this.props.messages[i].message;
-        var message = _react2.default.createElement(
-          'ul',
-          { key: 'message' + i },
-          str
-        );
-        allmessages.push(message);
-      }
-=======
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
-
-      return _react2.default.createElement(
-        'div',
-        { className: 'chatBox' },
-        _react2.default.createElement(
-          'div',
-          { id: 'inputGuess' },
-          _react2.default.createElement('input', { id: 'input', type: 'text', onChange: this.props.setGuessInput }),
-          _react2.default.createElement(
-            'button',
-            { onClick: this.props.sendGuess },
-            'Send'
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { id: 'displayChat' },
-          _react2.default.createElement(
-            'ul',
-            null,
-            allmessages
-          )
-        )
-      );
-    }
-  }]);
-
-  return MessageBox;
-}(_react.Component);
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MessageBox);
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(2);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(11);
-
-var _actions = __webpack_require__(12);
-
-var actions = _interopRequireWildcard(_actions);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var mapStateToProps = function mapStateToProps(store) {
-  return {
-    users: store.users
-  };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {};
-};
-
-var Users = function (_Component) {
-  _inherits(Users, _Component);
-
-  function Users(props) {
-    _classCallCheck(this, Users);
-
-    return _possibleConstructorReturn(this, (Users.__proto__ || Object.getPrototypeOf(Users)).call(this, props));
-  }
-
-  _createClass(Users, [{
-    key: 'render',
-    value: function render() {
-      var allusers = [];
-      for (var i = 0; i < this.props.users.length; i++) {
-        var info = '' + this.props.users[i].name;
-        var userclass = this.props.users[i].drawer ? 'drawerBox' : 'guesserBox';
-        var user = _react2.default.createElement(
-          'div',
-          { className: userclass, key: 'user' + i },
-          info
-        );
-        allusers.push(user);
-      }
-
-      return _react2.default.createElement(
-        'div',
-        { className: 'userPanel' },
-        allusers
-      );
-    }
-  }]);
-
-  return Users;
-}(_react.Component);
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Users);
-
-/***/ }),
-<<<<<<< HEAD
-/* 96 */
-=======
-/* 92 */
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-<<<<<<< HEAD
-var _redux = __webpack_require__(33);
-
-var _mainReducer = __webpack_require__(97);
-
-var _mainReducer2 = _interopRequireDefault(_mainReducer);
-
-var _socket = __webpack_require__(98);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// we are adding composeWithDevTools here to get easy access to the Redux dev tools
-=======
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
-
-var _react = __webpack_require__(2);
-
-var _react2 = _interopRequireDefault(_react);
-
 var _CanvasBoard = __webpack_require__(93);
 
-<<<<<<< HEAD
-/***/ }),
-/* 97 */
-/***/ (function(module, exports, __webpack_require__) {
-=======
 var _CanvasBoard2 = _interopRequireDefault(_CanvasBoard);
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
 
 var _MessageBox = __webpack_require__(94);
 
@@ -25178,11 +24886,7 @@ var _MessageBox2 = _interopRequireDefault(_MessageBox);
 
 var _Users = __webpack_require__(95);
 
-<<<<<<< HEAD
-var _actionTypes = __webpack_require__(20);
-=======
 var _Users2 = _interopRequireDefault(_Users);
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25200,10 +24904,6 @@ var App = function (_Component) {
 
 		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 	}
-
-	// <Users /> 
-	// <MessageBox />
-
 
 	_createClass(App, [{
 		key: 'render',
@@ -25224,11 +24924,7 @@ var App = function (_Component) {
 exports.default = App;
 
 /***/ }),
-<<<<<<< HEAD
-/* 98 */
-=======
 /* 93 */
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25238,8 +24934,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-<<<<<<< HEAD
-=======
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(2);
@@ -25669,17 +25363,23 @@ var mainReducer = function mainReducer() {
       return Object.assign({}, state, { messages: messages });
 
     case types.GET_USERS:
-      // const users = JSON.parse(JSON.stringify(state.users));
       var users = action.users;
       return Object.assign({}, state, { users: users });
 
     case types.ADD_CLICK:
+      var canvas_click = JSON.parse(JSON.stringify(state.canvas));
+      // console.log(action);
+      canvas_click.clickX.push(action.x);
+      canvas_click.clickY.push(action.y);
+      canvas_click.clickDrag.push(action.dragging);
+      return Object.assign({}, state, { canvas: canvas_click });
+
+    case types.ADD_PIXS:
       var canvas = JSON.parse(JSON.stringify(state.canvas));
       // console.log(action);
-      canvas.clickX.push(action.x);
-      canvas.clickY.push(action.y);
-      canvas.clickDrag.push(action.dragging);
-      //console.log('add click in reducer', stateCopy)
+      canvas.clickX = canvas.clickX.concat(action.clickX);
+      canvas.clickY = canvas.clickY.concat(action.clickY);
+      canvas.clickDrag = canvas.clickDrag.concat(action.clickDrag);
       return Object.assign({}, state, { canvas: canvas });
 
     default:
@@ -25702,7 +25402,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.socketMiddleware = socketMiddleware;
 exports.onEventSocket = onEventSocket;
 
->>>>>>> 3e1b1dbe05235d7774f4dd3bfd565605c07e0062
 var _socket = __webpack_require__(99);
 
 var _socket2 = _interopRequireDefault(_socket);
@@ -25724,6 +25423,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // let socket = null;
 var socket = _socket2.default.connect('http://localhost:3000');
 
+var numOfPixels = 0;
+var canvasPixs = {};
+var timer = Date.now();
+function initCanvasPixs() {
+  canvasPixs = {
+    clickX: [],
+    clickY: [],
+    clickDrag: []
+  };
+}
+initCanvasPixs();
+
+function sendPixsAnyway() {
+  socket.emit('canvas', canvasPixs);
+  initCanvasPixs();
+  numOfPixels = 0;;
+}
+
 function socketMiddleware(store) {
   return function (next) {
     return function (action) {
@@ -25733,12 +25450,17 @@ function socketMiddleware(store) {
         socket.emit('guess', action.guess);
       }
       if (action.type === types.ADD_CLICK) {
-        var canvasPix = {
-          x: action.x,
-          y: action.y,
-          dragging: action.dragging
-        };
-        socket.emit('canvas', canvasPix);
+        numOfPixels++;
+        canvasPixs.clickX.push(action.x);
+        canvasPixs.clickY.push(action.y);
+        canvasPixs.clickDrag.push(action.dragging);
+        if (numOfPixels > 20) {
+          socket.emit('canvas', canvasPixs);
+          initCanvasPixs();
+          numOfPixels = 0;
+          clearTimeout(_sendPixs);
+        }
+        var _sendPixs = setTimeout(sendPixsAnyway, 2000);
       }
       return result;
     };
@@ -25754,9 +25476,8 @@ function onEventSocket(store) {
     store.dispatch(actions.getUsers(users));
   });
 
-  socket.on('canvasUpdate', function (canvasPix) {
-
-    store.dispatch(actions.addClick(canvasPix.x, canvasPix.y, canvasPix.drawing));
+  socket.on('canvasUpdate', function (canvasPixs) {
+    store.dispatch(actions.addPixs(canvasPixs.clickX, canvasPixs.clickY, canvasPixs.clickDrag));
   });
 }
 

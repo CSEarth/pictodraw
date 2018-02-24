@@ -7,6 +7,24 @@ import * as actions from './redux/actions/actions';
 // let socket = null;
 const socket = io.connect('http://localhost:3000');
 
+let numOfPixels = 0;
+let canvasPixs = {};
+let timer = Date.now();
+function initCanvasPixs() {
+  canvasPixs = {
+       clickX: [],
+       clickY: [],
+    clickDrag: []
+  }
+}
+initCanvasPixs();
+
+function sendPixsAnyway() {
+  socket.emit('canvas', canvasPixs);
+  initCanvasPixs();
+  numOfPixels = 0;;
+}
+
 export function socketMiddleware(store) {
   return next => action => {
     const result = next(action);
@@ -15,12 +33,17 @@ export function socketMiddleware(store) {
       socket.emit('guess', action.guess);
     }
     if (action.type === types.ADD_CLICK) {
-      const canvasPix = {
-               x: action.x,
-               y: action.y,
-        dragging: action.dragging
+      numOfPixels++;
+      canvasPixs.clickX.push(action.x);
+      canvasPixs.clickY.push(action.y);
+      canvasPixs.clickDrag.push(action.dragging);
+      if (numOfPixels > 20) {
+        socket.emit('canvas', canvasPixs);
+        initCanvasPixs();
+        numOfPixels = 0;
+        clearTimeout(sendPixs);
       }
-      socket.emit('canvas', canvasPix);
+      const sendPixs = setTimeout(sendPixsAnyway,2000);
     }
     return result;
   };
@@ -35,9 +58,8 @@ export function onEventSocket(store) {
     store.dispatch(actions.getUsers(users));
   });
 
-  socket.on('canvasUpdate', canvasPix => {
-
-    store.dispatch(actions.addClick(canvasPix.x, canvasPix.y, canvasPix.drawing));
+  socket.on('canvasUpdate', canvasPixs => {
+    store.dispatch(actions.addPixs(canvasPixs.clickX, canvasPixs.clickY, canvasPixs.clickDrag));
   });
 
 }

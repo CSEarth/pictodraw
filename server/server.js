@@ -33,9 +33,9 @@ io.on('connection', function (socket) {
   io.emit('allUsers', users);
 
 
-  socket.on('canvas', (canvasPix) => {
+  socket.on('canvas', (canvasPixs) => {
     // console.log(canvasPix);
-    socket.broadcast.emit('canvasUpdate', canvasPix);
+    socket.broadcast.emit('canvasUpdate', canvasPixs);
   });
 
   socket.on('guess', (guess) => {
