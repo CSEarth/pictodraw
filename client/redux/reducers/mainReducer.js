@@ -8,11 +8,17 @@ const initialState = {
   users: [],
   correctWord: '',
   messages: [],
-  guessInput: ''
+  guessInput: '',
+  canvas: {
+    drawer: true,
+    clickX: [],
+    clickY: [],
+    clickDrag: [],
+  }
 };
 
 const mainReducer = (state=initialState, action) => {
-  console.log('From-reducer', action.type);
+  // console.log('From-reducer', action.type);
   switch(action.type) {
     case types.SET_GUESS_INPUT:
       // console.log(action.guess);
@@ -45,9 +51,25 @@ const mainReducer = (state=initialState, action) => {
         {users: users}
       );
 
+    case types.ADD_CLICK:
+      const canvas = JSON.parse(JSON.stringify(state.canvas));
+      // console.log(action);
+      canvas.clickX.push(action.x);
+      canvas.clickY.push(action.y);
+      canvas.clickDrag.push(action.dragging);
+      //console.log('add click in reducer', stateCopy)
+      return Object.assign({},
+        state,
+        {canvas}
+      );
+    
+
     default:
       return state;
   }
 };
+
+
+
 
 export default mainReducer;

@@ -11,15 +11,14 @@ const io = socketio(server);
 const connections = [];
 const users = [];
 let idxUser = 1;
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(cookieParser());
+
 app.use((req,res,next)=>{
   console.log(req.method, req.url);
   next();
 });
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname , './../client/test.html'));
+  res.sendFile(path.join(__dirname , './../index.html'));
 });
 
 app.get('/build/bundle.js', function (req, res) {
@@ -34,9 +33,11 @@ io.on('connection', function (socket) {
   io.emit('allUsers', users);
 
 
-  // socket.on('canvas', (data) => {
-  //   userController.updataCanvas(data, socket);
-  // });
+  socket.on('canvas', (canvasPix) => {
+    // console.log(canvasPix);
+    socket.broadcast.emit('canvasUpdate', canvasPix);
+  });
+
   socket.on('guess', (guess) => {
     const str = `user-${socket.id}: ${guess}`;
     console.log(guess);
@@ -46,6 +47,7 @@ io.on('connection', function (socket) {
     };
     io.emit('message', message);
   });
+
   socket.on('disconnect', function (reason) {
     deleteUser(reason, socket.id);
   });
