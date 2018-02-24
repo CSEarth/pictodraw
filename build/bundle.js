@@ -1599,10 +1599,10 @@ var setDrawer = function setDrawer(name) {
 	};
 };
 
-var addMessage = function addMessage(message) {
+var setID = function setID(id) {
 	return {
-		type: types.ADD_MESSAGE,
-		message: message
+		type: types.SET_ID,
+		id: id
 	};
 };
 
@@ -1610,6 +1610,13 @@ var getUsers = function getUsers(users) {
 	return {
 		type: types.GET_USERS,
 		users: users
+	};
+};
+
+var addMessage = function addMessage(message) {
+	return {
+		type: types.ADD_MESSAGE,
+		message: message
 	};
 };
 
@@ -1649,6 +1656,7 @@ var addPixs = function addPixs(clickX, clickY, clickDrag) {
 
 module.exports = {
 	setDrawer: setDrawer,
+	setID: setID,
 	getUsers: getUsers,
 	setGuessInput: setGuessInput,
 	sendGuess: sendGuess,
@@ -2120,10 +2128,11 @@ var SEND_GUESS = "SEND_GUESS";
 var ADD_MESSAGE = "ADD_MESSAGE";
 var ADD_CLICK = "ADD_CLICK";
 var ADD_PIXS = "ADD_PIXS";
-
+var SET_ID = 'SET_ID';
 exports.SET_DRAWER = SET_DRAWER;
-exports.ADD_MESSAGE = ADD_MESSAGE;
+exports.SET_ID = SET_ID;
 exports.GET_USERS = GET_USERS;
+exports.ADD_MESSAGE = ADD_MESSAGE;
 exports.SET_GUESS_INPUT = SET_GUESS_INPUT;
 exports.SEND_GUESS = SEND_GUESS;
 exports.ADD_CLICK = ADD_CLICK;
@@ -24958,7 +24967,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var mapStateToProps = function mapStateToProps(store) {
   return {
-    isDrawing: store.canvas.drawer,
+    // isDrawing: store.canvas.drawer,
+    isDrawing: store.drawer,
     clickX: store.canvas.clickX,
     clickY: store.canvas.clickY,
     clickDrag: store.canvas.clickDrag
@@ -25330,12 +25340,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var initialState = {
   drawer: false,
+  id: '',
+  name: '',
   users: [],
   correctWord: '',
   messages: [],
   guessInput: '',
   canvas: {
-    drawer: true,
+    // drawer: true,
     clickX: [],
     clickY: [],
     clickDrag: []
@@ -25348,8 +25360,24 @@ var mainReducer = function mainReducer() {
 
   // console.log('From-reducer', action.type);
   switch (action.type) {
+    case types.SET_ID:
+      return Object.assign({}, state, { id: action.id });
+
+    case types.GET_USERS:
+      var users = action.users;
+      var drawer = false;
+      var name = '';
+      var correctWord = '';
+      for (var user in users) {
+        if (user.id === state.id) {
+          drawer = user.drawer;
+          name = user.name;
+          correctWord = user.correctWord;
+        }
+      }
+      return Object.assign({}, state, { users: users }, correctWord, drawer, name);
+
     case types.SET_GUESS_INPUT:
-      // console.log(action.guess);
       return Object.assign({}, state, { guessInput: action.guess });
 
     case types.SEND_GUESS:
@@ -25361,10 +25389,6 @@ var mainReducer = function mainReducer() {
       var messages = JSON.parse(JSON.stringify(state.messages));
       messages.push(action.message);
       return Object.assign({}, state, { messages: messages });
-
-    case types.GET_USERS:
-      var users = action.users;
-      return Object.assign({}, state, { users: users });
 
     case types.ADD_CLICK:
       var canvas_click = JSON.parse(JSON.stringify(state.canvas));
@@ -25418,10 +25442,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const socket = io.connect('http://12.9.9.21:3000');
+var socket = _socket2.default.connect('http://10.9.9.21:3000');
 
 // let socket = null;
-var socket = _socket2.default.connect('http://localhost:3000');
+// const socket = io.connect('http://localhost:3000');
 
 var numOfPixels = 0;
 var canvasPixs = {};
@@ -25441,26 +25465,35 @@ function sendPixsAnyway() {
   numOfPixels = 0;;
 }
 
+// https://redux.js.org/advanced/middleware
 function socketMiddleware(store) {
   return function (next) {
     return function (action) {
       var result = next(action);
       // console.log('from socketMiddleware', action.type);
       if (action.type === types.SEND_GUESS) {
-        socket.emit('guess', action.guess);
+        var name = store.getState().name;
+        var guess = {
+          guess: action.guess,
+          name: name
+        };
+        socket.emit('guess', guess);
       }
+
       if (action.type === types.ADD_CLICK) {
         numOfPixels++;
         canvasPixs.clickX.push(action.x);
         canvasPixs.clickY.push(action.y);
         canvasPixs.clickDrag.push(action.dragging);
-        if (numOfPixels > 20) {
+        var sendPixs = void 0;
+        if (numOfPixels > 19) {
           socket.emit('canvas', canvasPixs);
           initCanvasPixs();
           numOfPixels = 0;
-          clearTimeout(_sendPixs);
+          clearTimeout(sendPixs);
+        } else {
+          sendPixs = setTimeout(sendPixsAnyway, 500);
         }
-        var _sendPixs = setTimeout(sendPixsAnyway, 2000);
       }
       return result;
     };
@@ -25468,6 +25501,10 @@ function socketMiddleware(store) {
 }
 
 function onEventSocket(store) {
+  socket.on('setID', function (id) {
+    store.dispatch(actions.setID(id));
+  });
+
   socket.on('message', function (message) {
     store.dispatch(actions.addMessage(message));
   });

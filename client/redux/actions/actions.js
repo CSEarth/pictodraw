@@ -6,18 +6,24 @@ const setDrawer = (name) => {
 	}
 };
 
-const addMessage = (message) => {
+const setID = (id) => {
 	return {
-		type: types.ADD_MESSAGE,
-		message
+		type: types.SET_ID,
+		id
 	}
 };
-
 
 const getUsers = (users) => {
 	return {
 		type: types.GET_USERS,
 		users
+	}
+};
+
+const addMessage = (message) => {
+	return {
+		type: types.ADD_MESSAGE,
+		message
 	}
 };
 
@@ -58,6 +64,7 @@ const addPixs = (clickX, clickY, clickDrag) => {
 
 module.exports = {
 	setDrawer,
+	setID,
 	getUsers,
 	setGuessInput,
 	sendGuess,

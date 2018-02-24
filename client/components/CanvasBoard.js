@@ -4,7 +4,8 @@ import * as actions from '../redux/actions/actions';
 
 const mapStateToProps = store => {
   return {
-    isDrawing: store.canvas.drawer,
+    // isDrawing: store.canvas.drawer,
+    isDrawing: store.drawer,
     clickX: store.canvas.clickX,
     clickY: store.canvas.clickY,
     clickDrag: store.canvas.clickDrag

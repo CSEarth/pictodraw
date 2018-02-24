@@ -5,12 +5,14 @@ import * as types from './../actions/actionTypes';
 
 const initialState = {
   drawer: false,
+  id: '',
+  name: '',
   users: [],
   correctWord: '',
   messages: [],
   guessInput: '',
   canvas: {
-    drawer: true,
+    // drawer: true,
     clickX: [],
     clickY: [],
     clickDrag: [],
@@ -20,8 +22,33 @@ const initialState = {
 const mainReducer = (state=initialState, action) => {
   // console.log('From-reducer', action.type);
   switch(action.type) {
+    case types.SET_ID:
+      return Object.assign({},
+        state,
+        {id: action.id}
+      );
+
+    case types.GET_USERS:
+      const users = action.users;
+      let drawer = false;
+      let name = '';
+      let correctWord = '';
+      for (let user in users) {
+        if (user.id === state.id)  {
+          drawer = user.drawer;
+          name = user.name;
+          correctWord = user.correctWord;
+        }
+      }
+      return Object.assign({},
+        state,
+        {users: users},
+        correctWord,
+        drawer,
+        name
+      );
+
     case types.SET_GUESS_INPUT:
-      // console.log(action.guess);
       return Object.assign({},
         state,
         {guessInput: action.guess}
@@ -41,13 +68,6 @@ const mainReducer = (state=initialState, action) => {
       return Object.assign({},
         state,
         {messages}
-      );
-
-    case types.GET_USERS:
-      const users = action.users;
-      return Object.assign({},
-        state,
-        {users: users}
       );
 
     case types.ADD_CLICK:
