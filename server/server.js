@@ -10,7 +10,6 @@ const io = socketio(server);
 
 const connections = [];
 let currentDrawing = {};
-
 let currentWord = wordController.getANewWord();
 const users = [];
 let numberOfUsers = 0;
@@ -69,6 +68,7 @@ io.on('connection', function (socket) {
 
   socket.on('disconnect', function (reason) {
     deleteUser(reason, socket.id);
+    io.emit('allUsers', users);
   });
 });
 
@@ -83,7 +83,7 @@ function pickNewDrawer() {
   users[drawerIdx].drawer = false;
   users[drawerIdx].correctWord = '';
   drawerIdx++;
-  if (drawerIdx > numberOfUsers) drawerIdx = 0;
+  if (drawerIdx >= numberOfUsers) drawerIdx = 0;
   currentWord = wordController.getANewWord();
   users[drawerIdx].drawer = true;
   users[drawerIdx].correctWord = currentWord;
@@ -116,8 +116,14 @@ function addUsers(id) {
 function deleteUser(reason, id) {
   console.log('disconneted', id, reason);
   const index = connections.indexOf(id);
+  if (drawerIdx > index) drawerIdx--;
   connections.splice(index, 1);
   users.splice(index, 1);
+  if (drawerIdx === index) {
+    currentWord = wordController.getANewWord();
+    users[drawerIdx].drawer = true;
+    users[drawerIdx].correctWord = currentWord;
+  }
   numberOfUsers--;
 }
 
