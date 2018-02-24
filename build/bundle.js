@@ -25571,9 +25571,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const socket = io.connect('http://10.9.9.21:3000');
+var socket = _socket2.default.connect('http://10.9.9.21:8000');
 
-var socket = _socket2.default.connect('http://localhost:3000');
+// const socket = io.connect('http://localhost:8000');
 
 var numOfPixels = 0;
 var canvasPixs = {};

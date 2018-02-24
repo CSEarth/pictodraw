@@ -19,10 +19,10 @@ clearCanvas();
 
 
 
-app.use((req,res,next)=>{
-  console.log(req.method, req.url);
-  next();
-});
+// app.use((req,res,next)=>{
+//   console.log(req.method, req.url);
+//   next();
+// });
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname , './../index.html'));
@@ -90,7 +90,7 @@ function pickNewDrawer() {
 }
 
 function isGuessCorrect(guess) {
-  return guess.toLowerCase() === currentWord;
+  return guess.toLowerCase() === currentWord.toLowerCase();
 }
 
 
@@ -137,4 +137,4 @@ function updataDrawing(canvasPixs) {
 
 
 
-server.listen(3000);
+server.listen(8000);
