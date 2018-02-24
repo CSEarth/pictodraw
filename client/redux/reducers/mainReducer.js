@@ -4,13 +4,14 @@ import * as types from './../actions/actionTypes';
 
 
 const initialState = {
-  drawer: true,
+  drawer: false,
+  id: '',
+  name: '',
   users: [],
   correctWord: '',
   messages: [],
   guessInput: '',
   canvas: {
-    // drawer: true,
     clickX: [],
     clickY: [],
     clickDrag: [],
@@ -20,8 +21,37 @@ const initialState = {
 const mainReducer = (state=initialState, action) => {
   // console.log('From-reducer', action.type);
   switch(action.type) {
+    case types.SET_ID:
+      // const newState = Object.assign({}, state);
+      // newState.id =
+      return Object.assign({},
+        state,
+        {id: action.id}
+      );
+
+    case types.GET_USERS:
+      const users = action.users;
+      let drawer = false;
+      let name = '';
+      let correctWord = '';
+      for (let user of users) {
+        // console.log(user);
+        if (user.id === state.id)  {
+          drawer = user.drawer;
+          name = user.name;
+          correctWord = user.correctWord;
+        }
+      }
+      // console.log('username', users);
+      return Object.assign({},
+        state,
+        {users: users},
+        {correctWord: correctWord},
+        {drawer:drawer},
+        {name: name}
+      );
+
     case types.SET_GUESS_INPUT:
-      // console.log(action.guess);
       return Object.assign({},
         state,
         {guessInput: action.guess}
@@ -37,17 +67,11 @@ const mainReducer = (state=initialState, action) => {
 
     case types.ADD_MESSAGE:
       const messages = JSON.parse(JSON.stringify(state.messages));
-      messages.push(action.message);
+      messages.unshift(action.message);
+      if (messages.length > 7) messages.pop();
       return Object.assign({},
         state,
-        {messages}
-      );
-
-    case types.GET_USERS:
-      const users = action.users;
-      return Object.assign({},
-        state,
-        {users: users}
+        {messages: messages}
       );
 
     case types.ADD_CLICK:
@@ -69,7 +93,7 @@ const mainReducer = (state=initialState, action) => {
       canvas.clickDrag = canvas.clickDrag.concat(action.clickDrag);
       return Object.assign({},
         state,
-        {canvas}
+        {canvas: canvas}
       );
 
     case types.CLEAR_CANVAS:

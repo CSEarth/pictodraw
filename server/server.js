@@ -2,15 +2,21 @@ const express = require('express');
 const path = require('path');
 const socketio = require('socket.io');
 const http = require('http');
-// const userController = require('./userController');
+const wordController = require('./wordController');
 
 const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
 const connections = [];
+let currentDrawing = {};
+
+let currentWord = wordController.getANewWord();
 const users = [];
-let idxUser = 1;
+let numberOfUsers = 0;
+let drawerIdx = 0;
+clearCanvas();
+
 
 let correctWord = 'dog'; // always save correct word as lowercase
 
@@ -31,28 +37,34 @@ app.get('/client/styles/styles.css', function (req, res) {
   res.sendFile(path.join(__dirname , './../client/styles/styles.css'));
 });
 
-  // io.emit('welcome', { hello: 'world' });// send  to all sockets that connect to '/'
-
 io.on('connection', function (socket) {
 
   addUsers(socket.id);
+  // console.log('numberOfUsers',numberOfUsers);
+  // console.log('drawerIdx',drawerIdx);
+  socket.emit('setID', socket.id);
+  socket.emit('canvasUpdate', currentDrawing);
+  // console.log('users',users);
   io.emit('allUsers', users);
 
 
   socket.on('canvas', (canvasPixs) => {
-    // console.log(canvasPix);
+    updataDrawing(canvasPixs);
     socket.broadcast.emit('canvasUpdate', canvasPixs);
   });
 
   socket.on('guess', (guess) => {
-    const str = `user-${socket.id}: ${guess}`;
-    console.log(guess);
-    const message = {
-      user: socket.id,
-      message: guess
+    const str = `${guess.name}: ${guess.guess}`;
+    console.log(str);
+    const newMessage = {
+      user: guess.name,
+      message: guess.guess
     };
-    io.emit('message', message);
-    checkGuess(message);
+    if (isGuessCorrect(guess.guess)) {
+      newMessage.message += '        CORRECT ANSWER! Cong!';
+      startNewGame();
+    }
+    io.emit('message', newMessage);
   });
 
   socket.on('disconnect', function (reason) {
@@ -60,38 +72,68 @@ io.on('connection', function (socket) {
   });
 });
 
+function startNewGame() {
+  clearCanvas();
+  pickNewDrawer();
+  io.emit('clearCanvas');
+  io.emit('allUsers', users);
+}
+
+function pickNewDrawer() {
+  users[drawerIdx].drawer = false;
+  users[drawerIdx].correctWord = '';
+  drawerIdx++;
+  if (drawerIdx > numberOfUsers) drawerIdx = 0;
+  currentWord = wordController.getANewWord();
+  users[drawerIdx].drawer = true;
+  users[drawerIdx].correctWord = currentWord;
+}
+
+function isGuessCorrect(guess) {
+  return guess.toLowerCase() === currentWord;
+}
 
 
 function addUsers(id) {
   console.log(id,'  joined in');
   connections.push(id);
   let drawer = false;
-  if (idxUser === 1) drawer = true;
+  let correctWord = '';
+  if (numberOfUsers === 0) {
+    drawer = true;
+    correctWord = currentWord;
+  }
   const newUser = {
     id: id,
-    name: `User ${idxUser}`,
+    name: `User ${numberOfUsers}`,
+    correctWord: correctWord,
     drawer
   }
   users.push(newUser);
-  idxUser++;
+  numberOfUsers++;
 }
 
 function deleteUser(reason, id) {
-  console.log('disconneted id', reason);
+  console.log('disconneted', id, reason);
   const index = connections.indexOf(id);
   connections.splice(index, 1);
   users.splice(index, 1);
+  numberOfUsers--;
 }
 
-function checkGuess(guessObj) {
-  // replace special chars and trim
-  const guess = guessObj.message.toLowerCase(); 
-  if (correctWord === guess) {
-    io.emit('endGame', guessObj);
+function clearCanvas() {
+  currentDrawing = {
+       clickX: [],
+       clickY: [],
+    clickDrag: []
   }
 }
 
-
+function updataDrawing(canvasPixs) {
+  currentDrawing.clickX = currentDrawing.clickX.concat(canvasPixs.clickX);
+  currentDrawing.clickY = currentDrawing.clickY.concat(canvasPixs.clickY);
+  currentDrawing.clickDrag = currentDrawing.clickDrag.concat(canvasPixs.clickDrag);
+}
 
 
 
