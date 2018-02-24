@@ -18,7 +18,6 @@ let drawerIdx = 0;
 clearCanvas();
 
 
-let correctWord = 'dog'; // always save correct word as lowercase
 
 app.use((req,res,next)=>{
   console.log(req.method, req.url);
@@ -29,13 +28,14 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname , './../index.html'));
 });
 
+app.get('/client/styles/styles.css', function (req, res) {
+  res.sendFile(path.join(__dirname , './../client/styles/styles.css'));
+});
+
 app.get('/build/bundle.js', function (req, res) {
   res.sendFile(path.join(__dirname , './../build/bundle.js'));
 });
 
-app.get('/client/styles/styles.css', function (req, res) {
-  res.sendFile(path.join(__dirname , './../client/styles/styles.css'));
-});
 
 io.on('connection', function (socket) {
 

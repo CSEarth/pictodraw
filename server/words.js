@@ -1,5 +1,5 @@
 
-const words = ['burrito','coffee machine','whiteboarding','beach','long term memory','red light'];
+const words = ['burrito','coffee machine','whiteboarding','beach','long term memory','red light','Kyung','Albert'];
 
 
 

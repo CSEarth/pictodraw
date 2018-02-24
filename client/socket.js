@@ -2,9 +2,9 @@ import io from 'socket.io-client';
 import * as types from './redux/actions/actionTypes';
 import * as actions from './redux/actions/actions';
 
-const socket = io.connect('http://10.9.9.21:3000');
+// const socket = io.connect('http://10.9.9.21:3000');
 
-// const socket = io.connect('http://localhost:3000');
+const socket = io.connect('http://localhost:3000');
 
 let numOfPixels = 0;
 let canvasPixs = {};

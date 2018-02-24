@@ -14,6 +14,7 @@ class App extends Component {
 			<div className="gameContainer">
 			 	<Canvas /> 
 			 	<section className="messageContainer">
+					<GuessWord /> 
 			 		<h2>Players</h2>
 				 	<Users /> 
 					<MessageBox />  
