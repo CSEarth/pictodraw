@@ -1,18 +1,17 @@
 const express = require('express');
 const path = require('path');
-// const bodyParser = require('body-parser');
-// const cookieParser = require('cookie-parser');
 const socketio = require('socket.io');
 const http = require('http');
-const userController = require('./userController');
+// const userController = require('./userController');
 
 const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
-//
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(cookieParser());
+const connections = [];
+const users = [];
+let idxUser = 1;
+
 app.use((req,res,next)=>{
   console.log(req.method, req.url);
   next();
@@ -26,27 +25,53 @@ app.get('/build/bundle.js', function (req, res) {
   res.sendFile(path.join(__dirname , './../build/bundle.js'));
 });
 
+  // io.emit('welcome', { hello: 'world' });// send  to all sockets that connect to '/'
 
 io.on('connection', function (socket) {
-  console.log(socket.id,'  joined in');
-  // io.emit('welcome', { hello: 'world' });// send  to all sockets that connect to '/'
-  socket.emit('welcome', { hello: 'world' });
-  socket.on('test', function (data) {
-    console.log('test',data);
-    socket.emit('welcome2','hello again');
-  });
-  socket.on('canvas', (data) => {
-    userController.updataCanvas(data, client);
-  });   //
-  socket.on('message', (data) => {
-    userController.chatBox(data, client);
+
+  addUsers(socket.id);
+  io.emit('allUsers', users);
+
+
+  // socket.on('canvas', (data) => {
+  //   userController.updataCanvas(data, socket);
+  // });
+  socket.on('guess', (guess) => {
+    const str = `user-${socket.id}: ${guess}`;
+    console.log(guess);
+    const message = {
+      user: socket.id,
+      message: guess
+    };
+    io.emit('message', message);
   });
   socket.on('disconnect', function (reason) {
-    console.log('disconneted  id=',socket.id, reason);
+    deleteUser(reason, socket.id);
   });
 });
 
 
+
+function addUsers(id) {
+  console.log(id,'  joined in');
+  connections.push(id);
+  let drawer = false;
+  if (idxUser === 1) drawer = true;
+  const newUser = {
+    id: id,
+    name: `User ${idxUser}`,
+    drawer
+  }
+  users.push(newUser);
+  idxUser++;
+}
+
+function deleteUser(reason, id) {
+  console.log('disconneted id', reason);
+  const index = connections.indexOf(id);
+  connections.splice(index, 1);
+  users.splice(index, 1);
+}
 
 
 
