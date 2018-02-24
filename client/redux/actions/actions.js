@@ -21,7 +21,6 @@ const getUsers = (users) => {
 	}
 };
 
-
 const setGuessInput = () => {
 	const guess = document.getElementsByTagName('input').input.value;
 	return {
@@ -38,15 +37,21 @@ const sendGuess = () => {
 	}
 };
 
-
-
-
 const addClick = (x, y, dragging) => {
 	return {
 		type: types.ADD_CLICK,
 		x,
 		y,
 		dragging,
+	}
+}
+
+const addPixs = (clickX, clickY, clickDrag) => {
+	return {
+		type: types.ADD_PIXS,
+		clickX,
+		clickY,
+		clickDrag,
 	}
 }
 
@@ -57,5 +62,6 @@ module.exports = {
 	setGuessInput,
 	sendGuess,
 	addMessage,
-	addClick
+	addClick,
+	addPixs
 }

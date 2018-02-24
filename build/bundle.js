@@ -1638,13 +1638,23 @@ var addClick = function addClick(x, y, dragging) {
 	};
 };
 
+var addPixs = function addPixs(clickX, clickY, clickDrag) {
+	return {
+		type: types.ADD_PIXS,
+		clickX: clickX,
+		clickY: clickY,
+		clickDrag: clickDrag
+	};
+};
+
 module.exports = {
 	setDrawer: setDrawer,
 	getUsers: getUsers,
 	setGuessInput: setGuessInput,
 	sendGuess: sendGuess,
 	addMessage: addMessage,
-	addClick: addClick
+	addClick: addClick,
+	addPixs: addPixs
 };
 
 /***/ }),
@@ -2109,6 +2119,7 @@ var SET_GUESS_INPUT = "SET_GUESS_INPUT";
 var SEND_GUESS = "SEND_GUESS";
 var ADD_MESSAGE = "ADD_MESSAGE";
 var ADD_CLICK = "ADD_CLICK";
+var ADD_PIXS = "ADD_PIXS";
 
 exports.SET_DRAWER = SET_DRAWER;
 exports.ADD_MESSAGE = ADD_MESSAGE;
@@ -2116,6 +2127,7 @@ exports.GET_USERS = GET_USERS;
 exports.SET_GUESS_INPUT = SET_GUESS_INPUT;
 exports.SEND_GUESS = SEND_GUESS;
 exports.ADD_CLICK = ADD_CLICK;
+exports.ADD_PIXS = ADD_PIXS;
 
 /***/ }),
 /* 21 */
@@ -24893,10 +24905,6 @@ var App = function (_Component) {
 		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 	}
 
-	// <Users /> 
-	// <MessageBox />
-
-
 	_createClass(App, [{
 		key: 'render',
 		value: function render() {
@@ -24949,7 +24957,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var mapStateToProps = function mapStateToProps(store) {
-  console.log(store);
   return {
     isDrawing: store.canvas.drawer,
     clickX: store.canvas.clickX,
@@ -24997,7 +25004,7 @@ var CanvasBoard = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      console.log('cdu', this.props);
+      // console.log('cdu', this.props);
       this.redraw();
     }
 
@@ -25011,7 +25018,7 @@ var CanvasBoard = function (_Component) {
   }, {
     key: 'redraw',
     value: function redraw() {
-      console.log('redraw');
+      // console.log('redraw');
       this.state.context.clearRect(0, 0, this.state.context.canvas.width, this.state.context.canvas.height); // Clears the canvas
 
       this.state.context.strokeStyle = "black";
@@ -25339,7 +25346,7 @@ var mainReducer = function mainReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments[1];
 
-  console.log('From-reducer', action.type);
+  // console.log('From-reducer', action.type);
   switch (action.type) {
     case types.SET_GUESS_INPUT:
       // console.log(action.guess);
@@ -25356,17 +25363,25 @@ var mainReducer = function mainReducer() {
       return Object.assign({}, state, { messages: messages });
 
     case types.GET_USERS:
-      // const users = JSON.parse(JSON.stringify(state.users));
       var users = action.users;
       return Object.assign({}, state, { users: users });
 
     case types.ADD_CLICK:
+      var canvas_click = JSON.parse(JSON.stringify(state.canvas));
+      // console.log(action);
+      canvas_click.clickX.push(action.x);
+      canvas_click.clickY.push(action.y);
+      canvas_click.clickDrag.push(action.dragging);
+      return Object.assign({}, state, { canvas: canvas_click });
+
+    case types.ADD_PIXS:
       var canvas = JSON.parse(JSON.stringify(state.canvas));
-      canvas.clickX.push(action.x);
-      canvas.clickY.push(action.y);
-      canvas.clickDrag.push(action.dragging);
-      //console.log('add click in reducer', stateCopy)
+      // console.log(action);
+      canvas.clickX = canvas.clickX.concat(action.clickX);
+      canvas.clickY = canvas.clickY.concat(action.clickY);
+      canvas.clickDrag = canvas.clickDrag.concat(action.clickDrag);
       return Object.assign({}, state, { canvas: canvas });
+
     default:
       return state;
   }
@@ -25408,13 +25423,44 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // let socket = null;
 var socket = _socket2.default.connect('http://localhost:3000');
 
+var numOfPixels = 0;
+var canvasPixs = {};
+var timer = Date.now();
+function initCanvasPixs() {
+  canvasPixs = {
+    clickX: [],
+    clickY: [],
+    clickDrag: []
+  };
+}
+initCanvasPixs();
+
+function sendPixsAnyway() {
+  socket.emit('canvas', canvasPixs);
+  initCanvasPixs();
+  numOfPixels = 0;;
+}
+
 function socketMiddleware(store) {
   return function (next) {
     return function (action) {
       var result = next(action);
-      console.log('from socketMiddleware', action.type);
+      // console.log('from socketMiddleware', action.type);
       if (action.type === types.SEND_GUESS) {
         socket.emit('guess', action.guess);
+      }
+      if (action.type === types.ADD_CLICK) {
+        numOfPixels++;
+        canvasPixs.clickX.push(action.x);
+        canvasPixs.clickY.push(action.y);
+        canvasPixs.clickDrag.push(action.dragging);
+        if (numOfPixels > 20) {
+          socket.emit('canvas', canvasPixs);
+          initCanvasPixs();
+          numOfPixels = 0;
+          clearTimeout(_sendPixs);
+        }
+        var _sendPixs = setTimeout(sendPixsAnyway, 2000);
       }
       return result;
     };
@@ -25428,6 +25474,10 @@ function onEventSocket(store) {
 
   socket.on('allUsers', function (users) {
     store.dispatch(actions.getUsers(users));
+  });
+
+  socket.on('canvasUpdate', function (canvasPixs) {
+    store.dispatch(actions.addPixs(canvasPixs.clickX, canvasPixs.clickY, canvasPixs.clickDrag));
   });
 }
 

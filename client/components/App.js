@@ -8,8 +8,6 @@ class App extends Component {
 		super();
 	}
 
-	// <Users /> 
-	// <MessageBox />
 	render() {
 		return(
 			<div>

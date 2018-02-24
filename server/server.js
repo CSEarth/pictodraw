@@ -33,9 +33,11 @@ io.on('connection', function (socket) {
   io.emit('allUsers', users);
 
 
-  // socket.on('canvas', (data) => {
-  //   userController.updataCanvas(data, socket);
-  // });
+  socket.on('canvas', (canvasPixs) => {
+    // console.log(canvasPix);
+    socket.broadcast.emit('canvasUpdate', canvasPixs);
+  });
+
   socket.on('guess', (guess) => {
     const str = `user-${socket.id}: ${guess}`;
     console.log(guess);
@@ -45,6 +47,7 @@ io.on('connection', function (socket) {
     };
     io.emit('message', message);
   });
+
   socket.on('disconnect', function (reason) {
     deleteUser(reason, socket.id);
   });

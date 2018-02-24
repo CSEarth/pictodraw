@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import * as actions from '../redux/actions/actions';
 
 const mapStateToProps = store => {
-  console.log(store);
   return {
     isDrawing: store.canvas.drawer,
     clickX: store.canvas.clickX,
@@ -38,7 +37,7 @@ class CanvasBoard extends Component {
 
   // invoke redraw when we get props from store (updated state)
   componentDidUpdate() {
-    console.log('cdu', this.props)
+    // console.log('cdu', this.props);
     this.redraw();
   }
 
@@ -50,7 +49,7 @@ class CanvasBoard extends Component {
   // }
 
   redraw(){
-    console.log('redraw');
+    // console.log('redraw');
     this.state.context.clearRect(0, 0, this.state.context.canvas.width, this.state.context.canvas.height); // Clears the canvas
 
     this.state.context.strokeStyle = "black";
