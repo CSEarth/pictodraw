@@ -6,9 +6,15 @@ const initialState = {
   boardState: '',
   inputWord: '',
   list: [{
-  user: 'Team Earth',
-  drawer: false
+    user: 'Team Earth',
+    drawer: false
   }],
+  canvas: {
+    drawer: true,
+    clickX: [],
+    clickY: [],
+    clickDrag: [],
+  }
 }
 
 const users = (state = initialState, action) => {
@@ -19,7 +25,9 @@ const users = (state = initialState, action) => {
 }
 
 const mainReducer = (state = initialState, action) => {
-  //switch(action.type) {
+  var stateCopy = Object.assign({}, state);
+
+  switch(action.type) {
     // case types.SET_DRAWER:
     //
     // let newList = state.list;
@@ -57,11 +65,16 @@ const mainReducer = (state = initialState, action) => {
     //     inputWord,
     //     list
     //   };
+    case types.ADD_CLICK:
+      stateCopy.canvas.clickX.push(action.x);
+      stateCopy.canvas.clickY.push(action.y);
+      stateCopy.canvas.clickDrag.push(action.dragging);
+      //console.log('add click in reducer', stateCopy)
+      return stateCopy;
 
-
-    // default:
-    //   return state;
-  //}
+    default:
+      return state;
+  }
 };
 
 export default mainReducer;
