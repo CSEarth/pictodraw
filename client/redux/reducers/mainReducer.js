@@ -10,7 +10,7 @@ const initialState = {
   messages: [],
   guessInput: '',
   canvas: {
-    drawer: true,
+    // drawer: true,
     clickX: [],
     clickY: [],
     clickDrag: [],
@@ -70,6 +70,16 @@ const mainReducer = (state=initialState, action) => {
       return Object.assign({},
         state,
         {canvas}
+      );
+
+    case types.CLEAR_CANVAS:
+      const canvas_to_clear = JSON.parse(JSON.stringify(state.canvas));
+      canvas_to_clear.clickX = [];
+      canvas_to_clear.clickY = [];
+      canvas_to_clear.clickDrag = [];
+      return Object.assign({},
+        state,
+        {canvas_to_clear}
       );
 
 

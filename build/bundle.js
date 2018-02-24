@@ -1647,6 +1647,12 @@ var addPixs = function addPixs(clickX, clickY, clickDrag) {
 	};
 };
 
+var clearCanvas = function clearCanvas() {
+	return {
+		type: types.CLEAR_CANVAS
+	};
+};
+
 module.exports = {
 	setDrawer: setDrawer,
 	getUsers: getUsers,
@@ -1654,7 +1660,8 @@ module.exports = {
 	sendGuess: sendGuess,
 	addMessage: addMessage,
 	addClick: addClick,
-	addPixs: addPixs
+	addPixs: addPixs,
+	clearCanvas: clearCanvas
 };
 
 /***/ }),
@@ -2120,6 +2127,7 @@ var SEND_GUESS = "SEND_GUESS";
 var ADD_MESSAGE = "ADD_MESSAGE";
 var ADD_CLICK = "ADD_CLICK";
 var ADD_PIXS = "ADD_PIXS";
+var CLEAR_CANVAS = "CLEAR_CANVAS";
 
 exports.SET_DRAWER = SET_DRAWER;
 exports.ADD_MESSAGE = ADD_MESSAGE;
@@ -2128,6 +2136,7 @@ exports.SET_GUESS_INPUT = SET_GUESS_INPUT;
 exports.SEND_GUESS = SEND_GUESS;
 exports.ADD_CLICK = ADD_CLICK;
 exports.ADD_PIXS = ADD_PIXS;
+exports.CLEAR_CANVAS = CLEAR_CANVAS;
 
 /***/ }),
 /* 21 */
@@ -25335,7 +25344,7 @@ var initialState = {
   messages: [],
   guessInput: '',
   canvas: {
-    drawer: true,
+    // drawer: true,
     clickX: [],
     clickY: [],
     clickDrag: []
@@ -25381,6 +25390,13 @@ var mainReducer = function mainReducer() {
       canvas.clickY = canvas.clickY.concat(action.clickY);
       canvas.clickDrag = canvas.clickDrag.concat(action.clickDrag);
       return Object.assign({}, state, { canvas: canvas });
+
+    case types.CLEAR_CANVAS:
+      var canvas_to_clear = JSON.parse(JSON.stringify(state.canvas));
+      canvas_to_clear.clickX = [];
+      canvas_to_clear.clickY = [];
+      canvas_to_clear.clickDrag = [];
+      return Object.assign({}, state, { canvas_to_clear: canvas_to_clear });
 
     default:
       return state;
@@ -25478,6 +25494,10 @@ function onEventSocket(store) {
 
   socket.on('canvasUpdate', function (canvasPixs) {
     store.dispatch(actions.addPixs(canvasPixs.clickX, canvasPixs.clickY, canvasPixs.clickDrag));
+  });
+
+  socket.on('endGame', function (guessObj) {
+    store.dispatch(actions.clearCanvas);
   });
 }
 
