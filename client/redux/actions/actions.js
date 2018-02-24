@@ -26,9 +26,20 @@ const guessInput = (input) => {
 	}
 }
 
-module.export = {
+const addClick = (x, y, dragging) => {
+	return {
+		type: types.ADD_CLICK,
+		x,
+		y,
+		dragging,
+	}
+}
+
+
+module.exports = {
 	setDrawer,
 	addMessage,
 	addUser,
-	guessInput
+	guessInput,
+	addClick,
 }
