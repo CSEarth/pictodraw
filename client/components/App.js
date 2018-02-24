@@ -10,10 +10,13 @@ class App extends Component {
 
 	render() {
 		return(
-			<div>
+			<div className="gameContainer">
 			 	<Canvas /> 
-			 	<Users /> 
-				<MessageBox />  
+			 	<section className="messageContainer">
+			 		<h2>Players</h2>
+				 	<Users /> 
+					<MessageBox />  
+				</section>
 			</div> 
 		);
 	}

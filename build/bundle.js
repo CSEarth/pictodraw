@@ -24919,10 +24919,19 @@ var App = function (_Component) {
 		value: function render() {
 			return _react2.default.createElement(
 				'div',
-				null,
+				{ className: 'gameContainer' },
 				_react2.default.createElement(_CanvasBoard2.default, null),
-				_react2.default.createElement(_Users2.default, null),
-				_react2.default.createElement(_MessageBox2.default, null)
+				_react2.default.createElement(
+					'section',
+					{ className: 'messageContainer' },
+					_react2.default.createElement(
+						'h2',
+						null,
+						'Players'
+					),
+					_react2.default.createElement(_Users2.default, null),
+					_react2.default.createElement(_MessageBox2.default, null)
+				)
 			);
 		}
 	}]);
@@ -25080,7 +25089,7 @@ var CanvasBoard = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var canvas = _react2.default.createElement('canvas', { ref: 'canvas', width: 900, height: 900 });
+      var canvas = _react2.default.createElement('canvas', { ref: 'canvas', width: 900, height: 450 });
 
       if (this.props.isDrawing) {
         canvas = _react2.default.createElement('canvas', { onMouseDown: function onMouseDown(e) {
@@ -25091,7 +25100,7 @@ var CanvasBoard = function (_Component) {
             return _this2.stopDraw(e);
           }, onMouseLeave: function onMouseLeave(e) {
             return _this2.stopDraw(e);
-          }, ref: 'canvas', width: 900, height: 900 });
+          }, ref: 'canvas', width: 900, height: 450 });
       }
       return _react2.default.createElement(
         'div',
@@ -25269,7 +25278,7 @@ var Users = function (_Component) {
       var allusers = [];
       for (var i = 0; i < this.props.users.length; i++) {
         var info = '' + this.props.users[i].name;
-        var userclass = this.props.users[i].drawer ? 'drawerBox' : 'guesserBox';
+        var userclass = this.props.users[i].drawer ? 'drawerBox userBox' : 'guesserBox userBox';
         var user = _react2.default.createElement(
           'div',
           { className: userclass, key: 'user' + i },
@@ -25339,7 +25348,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 
 var initialState = {
-  drawer: false,
+  drawer: true,
   users: [],
   correctWord: '',
   messages: [],
