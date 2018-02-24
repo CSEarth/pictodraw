@@ -6,13 +6,12 @@ const setDrawer = (name) => {
 	}
 };
 
-const addMessage = (message) => {
+const setID = (id) => {
 	return {
-		type: types.ADD_MESSAGE,
-		message
+		type: types.SET_ID,
+		id
 	}
 };
-
 
 const getUsers = (users) => {
 	return {
@@ -21,6 +20,12 @@ const getUsers = (users) => {
 	}
 };
 
+const addMessage = (message) => {
+	return {
+		type: types.ADD_MESSAGE,
+		message
+	}
+};
 
 const setGuessInput = () => {
 	const guess = document.getElementsByTagName('input').input.value;
@@ -38,9 +43,6 @@ const sendGuess = () => {
 	}
 };
 
-
-
-
 const addClick = (x, y, dragging) => {
 	return {
 		type: types.ADD_CLICK,
@@ -50,12 +52,29 @@ const addClick = (x, y, dragging) => {
 	}
 }
 
+const addPixs = (clickX, clickY, clickDrag) => {
+	return {
+		type: types.ADD_PIXS,
+		clickX,
+		clickY,
+		clickDrag,
+	}
+}
+
+const clearCanvas = () => {
+	return {
+		type: types.CLEAR_CANVAS,
+	}
+} 
 
 module.exports = {
 	setDrawer,
+	setID,
 	getUsers,
 	setGuessInput,
 	sendGuess,
 	addMessage,
-	addClick
+	addClick,
+	addPixs,
+	clearCanvas,
 }

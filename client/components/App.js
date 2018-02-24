@@ -2,20 +2,23 @@ import React, { Component } from 'react';
 import Canvas from './CanvasBoard';
 import MessageBox from './MessageBox';
 import Users from './Users'
+import GuessWord from './GuessWord'
 
 class App extends Component {
 	constructor(){
 		super();
 	}
 
-	// <Users /> 
-	// <MessageBox />
 	render() {
 		return(
-			<div>
+			<div className="gameContainer">
 			 	<Canvas /> 
-			 	<Users /> 
-				<MessageBox />  
+			 	<section className="messageContainer">
+					<GuessWord /> 
+			 		<h2>Players</h2>
+				 	<Users /> 
+					<MessageBox />  
+				</section>
 			</div> 
 		);
 	}
