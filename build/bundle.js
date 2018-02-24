@@ -24967,7 +24967,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var mapStateToProps = function mapStateToProps(store) {
   return {
-    isDrawing: store.canvas.drawer,
+    isDrawing: store.drawer,
     clickX: store.canvas.clickX,
     clickY: store.canvas.clickY,
     clickDrag: store.canvas.clickDrag
@@ -25027,7 +25027,8 @@ var CanvasBoard = function (_Component) {
   }, {
     key: 'redraw',
     value: function redraw() {
-      // console.log('redraw');
+      console.log('redraw');
+      console.log(this.props);
       this.state.context.clearRect(0, 0, this.state.context.canvas.width, this.state.context.canvas.height); // Clears the canvas
 
       this.state.context.strokeStyle = "black";
@@ -25392,11 +25393,12 @@ var mainReducer = function mainReducer() {
       return Object.assign({}, state, { canvas: canvas });
 
     case types.CLEAR_CANVAS:
-      var canvas_to_clear = JSON.parse(JSON.stringify(state.canvas));
-      canvas_to_clear.clickX = [];
-      canvas_to_clear.clickY = [];
-      canvas_to_clear.clickDrag = [];
-      return Object.assign({}, state, { canvas_to_clear: canvas_to_clear });
+      var newCanvas = {
+        clickX: [],
+        clickY: [],
+        clickDrag: []
+      };
+      return Object.assign({}, state, { canvas: newCanvas });
 
     default:
       return state;
@@ -25497,7 +25499,7 @@ function onEventSocket(store) {
   });
 
   socket.on('endGame', function (guessObj) {
-    store.dispatch(actions.clearCanvas);
+    store.dispatch(actions.clearCanvas());
   });
 }
 

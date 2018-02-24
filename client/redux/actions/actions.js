@@ -57,7 +57,7 @@ const addPixs = (clickX, clickY, clickDrag) => {
 
 const clearCanvas = () => {
 	return {
-		type: types.CLEAR_CANVAS
+		type: types.CLEAR_CANVAS,
 	}
 } 
 

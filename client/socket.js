@@ -63,7 +63,7 @@ export function onEventSocket(store) {
   });
 
   socket.on('endGame', guessObj => {
-    store.dispatch(actions.clearCanvas);
+    store.dispatch(actions.clearCanvas());
   })
 
 }

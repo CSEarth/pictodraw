@@ -73,13 +73,14 @@ const mainReducer = (state=initialState, action) => {
       );
 
     case types.CLEAR_CANVAS:
-      const canvas_to_clear = JSON.parse(JSON.stringify(state.canvas));
-      canvas_to_clear.clickX = [];
-      canvas_to_clear.clickY = [];
-      canvas_to_clear.clickDrag = [];
+      const newCanvas = {
+        clickX: [],
+        clickY: [],
+        clickDrag: [],
+      }
       return Object.assign({},
         state,
-        {canvas_to_clear}
+        {canvas: newCanvas}
       );
 
 

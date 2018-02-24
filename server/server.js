@@ -81,7 +81,7 @@ function deleteUser(reason, id) {
 
 function checkGuess(guessObj) {
   // replace special chars and trim
-  const guess = guessObj.guess.toLowerCase(); 
+  const guess = guessObj.message.toLowerCase(); 
   if (correctWord === guess) {
     io.emit('endGame', guessObj);
   }
