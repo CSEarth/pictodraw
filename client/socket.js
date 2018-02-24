@@ -10,9 +10,17 @@ const socket = io.connect('http://localhost:3000');
 export function socketMiddleware(store) {
   return next => action => {
     const result = next(action);
-    console.log('from socketMiddleware', action.type);
+    // console.log('from socketMiddleware', action.type);
     if (action.type === types.SEND_GUESS) {
       socket.emit('guess', action.guess);
+    }
+    if (action.type === types.ADD_CLICK) {
+      const canvasPix = {
+               x: action.x,
+               y: action.y,
+        dragging: action.dragging
+      }
+      socket.emit('canvas', canvasPix);
     }
     return result;
   };
@@ -25,6 +33,11 @@ export function onEventSocket(store) {
 
   socket.on('allUsers', users => {
     store.dispatch(actions.getUsers(users));
+  });
+
+  socket.on('canvasUpdate', canvasPix => {
+
+    store.dispatch(actions.addClick(canvasPix.x, canvasPix.y, canvasPix.drawing));
   });
 
 }

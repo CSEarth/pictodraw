@@ -21,7 +21,6 @@ const getUsers = (users) => {
 	}
 };
 
-
 const setGuessInput = () => {
 	const guess = document.getElementsByTagName('input').input.value;
 	return {

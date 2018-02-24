@@ -24949,7 +24949,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var mapStateToProps = function mapStateToProps(store) {
-  console.log(store);
   return {
     isDrawing: store.canvas.drawer,
     clickX: store.canvas.clickX,
@@ -24997,7 +24996,7 @@ var CanvasBoard = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      console.log('cdu', this.props);
+      // console.log('cdu', this.props);
       this.redraw();
     }
 
@@ -25011,7 +25010,7 @@ var CanvasBoard = function (_Component) {
   }, {
     key: 'redraw',
     value: function redraw() {
-      console.log('redraw');
+      // console.log('redraw');
       this.state.context.clearRect(0, 0, this.state.context.canvas.width, this.state.context.canvas.height); // Clears the canvas
 
       this.state.context.strokeStyle = "black";
@@ -25339,7 +25338,7 @@ var mainReducer = function mainReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments[1];
 
-  console.log('From-reducer', action.type);
+  // console.log('From-reducer', action.type);
   switch (action.type) {
     case types.SET_GUESS_INPUT:
       // console.log(action.guess);
@@ -25362,11 +25361,13 @@ var mainReducer = function mainReducer() {
 
     case types.ADD_CLICK:
       var canvas = JSON.parse(JSON.stringify(state.canvas));
+      // console.log(action);
       canvas.clickX.push(action.x);
       canvas.clickY.push(action.y);
       canvas.clickDrag.push(action.dragging);
       //console.log('add click in reducer', stateCopy)
       return Object.assign({}, state, { canvas: canvas });
+
     default:
       return state;
   }
@@ -25412,9 +25413,17 @@ function socketMiddleware(store) {
   return function (next) {
     return function (action) {
       var result = next(action);
-      console.log('from socketMiddleware', action.type);
+      // console.log('from socketMiddleware', action.type);
       if (action.type === types.SEND_GUESS) {
         socket.emit('guess', action.guess);
+      }
+      if (action.type === types.ADD_CLICK) {
+        var canvasPix = {
+          x: action.x,
+          y: action.y,
+          dragging: action.dragging
+        };
+        socket.emit('canvas', canvasPix);
       }
       return result;
     };
@@ -25428,6 +25437,11 @@ function onEventSocket(store) {
 
   socket.on('allUsers', function (users) {
     store.dispatch(actions.getUsers(users));
+  });
+
+  socket.on('canvasUpdate', function (canvasPix) {
+
+    store.dispatch(actions.addClick(canvasPix.x, canvasPix.y, canvasPix.drawing));
   });
 }
 

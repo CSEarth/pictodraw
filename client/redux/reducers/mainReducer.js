@@ -18,7 +18,7 @@ const initialState = {
 };
 
 const mainReducer = (state=initialState, action) => {
-  console.log('From-reducer', action.type);
+  // console.log('From-reducer', action.type);
   switch(action.type) {
     case types.SET_GUESS_INPUT:
       // console.log(action.guess);
@@ -53,6 +53,7 @@ const mainReducer = (state=initialState, action) => {
 
     case types.ADD_CLICK:
       const canvas = JSON.parse(JSON.stringify(state.canvas));
+      // console.log(action);
       canvas.clickX.push(action.x);
       canvas.clickY.push(action.y);
       canvas.clickDrag.push(action.dragging);
@@ -61,6 +62,8 @@ const mainReducer = (state=initialState, action) => {
         state,
         {canvas}
       );
+    
+
     default:
       return state;
   }
