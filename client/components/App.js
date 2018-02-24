@@ -13,6 +13,7 @@ class App extends Component {
 	render() {
 		return(
 			<div>
+			 	<Canvas /> 
 			 	<Users /> 
 				<MessageBox />  
 			</div> 
@@ -20,6 +21,5 @@ class App extends Component {
 	}
 }
 
-// <Canvas /> 
-// 
+
 export default App;
