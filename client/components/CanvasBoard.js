@@ -13,7 +13,6 @@ const mapStateToProps = store => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    // addClick action takes arguments: x, y, dragging
     addClick: (x, y, dragging) => dispatch(actions.addClick(x, y, dragging))
   }
 };
@@ -32,22 +31,13 @@ class CanvasBoard extends Component {
   }
 
   componentDidMount() {
-    //console.log('cdm')
     this.setState({context: this.refs.canvas.getContext('2d')});
   }
 
   // invoke redraw when we get props from store (updated state)
   componentDidUpdate() {
-    console.log('cdu', this.props)
     this.redraw();
   }
-
-  // addClick(x, y, dragging) {
-  //   let xArr = this.state.clickX.concat([x]);
-  //   let yArr = this.state.clickY.concat([y]);
-  //   let dragArr = this.state.clickDrag.concat([dragging]);
-  //   this.setState({clickX: xArr, clickY: yArr, clickDrag: dragArr});
-  // }
 
   redraw(){
     console.log('redraw');
@@ -71,27 +61,23 @@ class CanvasBoard extends Component {
   }
 
   startDraw(e) {
-    //console.log('inside startDraw');
     let mouseX = e.pageX - e.currentTarget.offsetLeft;
     let mouseY = e.pageY - e.currentTarget.offsetTop;
 
     this.setState({paint: true});
 
     // these need to dispatch to store action
-    this.props.addClick(mouseX, mouseY);
     // redraw happens in component after redux state has been updated with click coordinates
-    // this.redraw();
+    this.props.addClick(mouseX, mouseY);
   }
 
   draw(e) {
-    //console.log('inside Draw');
     if(this.state.paint){
       this.props.addClick(e.pageX - e.currentTarget.offsetLeft, e.pageY - e.currentTarget.offsetTop, true);
     }
   }
 
   stopDraw(e) {
-    //console.log('inside stopDraw');
     this.setState({paint: false});
   }
 
