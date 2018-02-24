@@ -14,9 +14,10 @@ const addMessage = (message) => {
 };
 
 
-const addUser = () => {
+const getUsers = (users) => {
 	return {
-		type: types.ADD_USER
+		type: types.GET_USERS,
+		users
 	}
 };
 
@@ -42,7 +43,7 @@ const sendGuess = () => {
 
 export {
 	setDrawer,
-	addUser,
+	getUsers,
 	setGuessInput,
 	sendGuess,
 	addMessage,

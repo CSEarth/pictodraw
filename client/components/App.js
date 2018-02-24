@@ -1,7 +1,7 @@
 import React, { Component } from 'react'; 
 // import Canvas from './CanvasBoard';
 import MessageBox from './MessageBox';
-// import Users from './Users'
+import Users from './Users'
 
 class App extends Component {
 	constructor(){
@@ -10,7 +10,8 @@ class App extends Component {
 
 	render() {
 		return(
-			<div> 
+			<div>
+			 	<Users /> 
 				<MessageBox />  
 			</div> 
 		);
@@ -18,5 +19,5 @@ class App extends Component {
 }
 
 // <Canvas /> 
-// <Users /> 
+// 
 export default App;

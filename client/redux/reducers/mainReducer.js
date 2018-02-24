@@ -3,7 +3,6 @@ import * as types from './../actions/actionTypes';
 
 
 
-
 const initialState = {
   drawer: false,
   users: [],
@@ -13,7 +12,7 @@ const initialState = {
 };
 
 const mainReducer = (state=initialState, action) => {
-  // const marketList = JSON.parse(JSON.stringify(state.marketList));
+  console.log('From-reducer', action.type);
   switch(action.type) {
     case types.SET_GUESS_INPUT:
       // console.log(action.guess);
@@ -23,7 +22,6 @@ const mainReducer = (state=initialState, action) => {
       );
 
     case types.SEND_GUESS:
-      console.log('sending-reducer');
       const input = document.getElementsByTagName('input').input;
       input.value = '';
       return Object.assign({},
@@ -37,6 +35,14 @@ const mainReducer = (state=initialState, action) => {
       return Object.assign({},
         state,
         {messages}
+      );
+
+    case types.GET_USERS:
+      // const users = JSON.parse(JSON.stringify(state.users));
+      const users = action.users;
+      return Object.assign({},
+        state,
+        {users: users}
       );
 
     default:

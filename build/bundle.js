@@ -3768,7 +3768,7 @@ function verifyPlainObject(value, displayName, methodName) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.addMessage = exports.sendGuess = exports.setGuessInput = exports.addUser = exports.setDrawer = undefined;
+exports.addMessage = exports.sendGuess = exports.setGuessInput = exports.getUsers = exports.setDrawer = undefined;
 
 var _actionTypes = __webpack_require__(38);
 
@@ -3789,9 +3789,10 @@ var addMessage = function addMessage(message) {
 	};
 };
 
-var addUser = function addUser() {
+var getUsers = function getUsers(users) {
 	return {
-		type: types.ADD_USER
+		type: types.GET_USERS,
+		users: users
 	};
 };
 
@@ -3812,7 +3813,7 @@ var sendGuess = function sendGuess() {
 };
 
 exports.setDrawer = setDrawer;
-exports.addUser = addUser;
+exports.getUsers = getUsers;
 exports.setGuessInput = setGuessInput;
 exports.sendGuess = sendGuess;
 exports.addMessage = addMessage;
@@ -3831,14 +3832,14 @@ Object.defineProperty(exports, "__esModule", {
 // Creation of action types.
 
 var SET_DRAWER = "SET_DRAWER";
-var ADD_USER = "ADD_USER";
+var GET_USERS = "GET_USERS";
 var SET_GUESS_INPUT = "SET_GUESS_INPUT";
 var SEND_GUESS = "SEND_GUESS";
 var ADD_MESSAGE = "ADD_MESSAGE";
 
 exports.SET_DRAWER = SET_DRAWER;
 exports.ADD_MESSAGE = ADD_MESSAGE;
-exports.ADD_USER = ADD_USER;
+exports.GET_USERS = GET_USERS;
 exports.SET_GUESS_INPUT = SET_GUESS_INPUT;
 exports.SEND_GUESS = SEND_GUESS;
 
@@ -22947,6 +22948,10 @@ var _MessageBox = __webpack_require__(120);
 
 var _MessageBox2 = _interopRequireDefault(_MessageBox);
 
+var _Users = __webpack_require__(121);
+
+var _Users2 = _interopRequireDefault(_Users);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22956,8 +22961,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 // import Canvas from './CanvasBoard';
 
-
-// import Users from './Users'
 
 var App = function (_Component) {
 	_inherits(App, _Component);
@@ -22974,6 +22977,7 @@ var App = function (_Component) {
 			return _react2.default.createElement(
 				'div',
 				null,
+				_react2.default.createElement(_Users2.default, null),
 				_react2.default.createElement(_MessageBox2.default, null)
 			);
 		}
@@ -22983,7 +22987,7 @@ var App = function (_Component) {
 }(_react.Component);
 
 // <Canvas /> 
-// <Users /> 
+// 
 
 
 exports.default = App;
@@ -24964,14 +24968,13 @@ var mainReducer = function mainReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments[1];
 
-  // const marketList = JSON.parse(JSON.stringify(state.marketList));
+  console.log('From-reducer', action.type);
   switch (action.type) {
     case types.SET_GUESS_INPUT:
       // console.log(action.guess);
       return Object.assign({}, state, { guessInput: action.guess });
 
     case types.SEND_GUESS:
-      console.log('sending-reducer');
       var input = document.getElementsByTagName('input').input;
       input.value = '';
       return Object.assign({}, state, { guessInput: '' });
@@ -24980,6 +24983,11 @@ var mainReducer = function mainReducer() {
       var messages = JSON.parse(JSON.stringify(state.messages));
       messages.push(action.message);
       return Object.assign({}, state, { messages: messages });
+
+    case types.GET_USERS:
+      // const users = JSON.parse(JSON.stringify(state.users));
+      var users = action.users;
+      return Object.assign({}, state, { users: users });
 
     default:
       return state;
@@ -25026,7 +25034,7 @@ function socketMiddleware(store) {
   return function (next) {
     return function (action) {
       var result = next(action);
-      console.log('sending-socket', types.SEND_GUESS);
+      console.log('from socketMiddleware', action.type);
       if (action.type === types.SEND_GUESS) {
         socket.emit('guess', action.guess);
       }
@@ -25038,6 +25046,10 @@ function socketMiddleware(store) {
 function startSocket(store) {
   socket.on('message', function (message) {
     store.dispatch(actions.addMessage(message));
+  });
+
+  socket.on('allUsers', function (users) {
+    store.dispatch(actions.getUsers(users));
   });
 }
 
@@ -28358,6 +28370,86 @@ var MessageBox = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MessageBox);
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(3);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(66);
+
+var _actions = __webpack_require__(37);
+
+var actions = _interopRequireWildcard(_actions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapStateToProps = function mapStateToProps(store) {
+  return {
+    users: store.users
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {};
+};
+
+var Users = function (_Component) {
+  _inherits(Users, _Component);
+
+  function Users(props) {
+    _classCallCheck(this, Users);
+
+    return _possibleConstructorReturn(this, (Users.__proto__ || Object.getPrototypeOf(Users)).call(this, props));
+  }
+
+  _createClass(Users, [{
+    key: 'render',
+    value: function render() {
+      var allusers = [];
+      for (var i = 0; i < this.props.users.length; i++) {
+        var info = '' + this.props.users[i].name;
+        var userclass = this.props.users[i].drawer ? 'drawerBox' : 'guesserBox';
+        var user = _react2.default.createElement(
+          'div',
+          { className: userclass, key: 'user' + i },
+          info
+        );
+        allusers.push(user);
+      }
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'userPanel' },
+        allusers
+      );
+    }
+  }]);
+
+  return Users;
+}(_react.Component);
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Users);
 
 /***/ })
 /******/ ]);
