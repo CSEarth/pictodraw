@@ -1599,10 +1599,10 @@ var setDrawer = function setDrawer(name) {
 	};
 };
 
-var addMessage = function addMessage(message) {
+var setID = function setID(id) {
 	return {
-		type: types.ADD_MESSAGE,
-		message: message
+		type: types.SET_ID,
+		id: id
 	};
 };
 
@@ -1610,6 +1610,13 @@ var getUsers = function getUsers(users) {
 	return {
 		type: types.GET_USERS,
 		users: users
+	};
+};
+
+var addMessage = function addMessage(message) {
+	return {
+		type: types.ADD_MESSAGE,
+		message: message
 	};
 };
 
@@ -1655,6 +1662,7 @@ var clearCanvas = function clearCanvas() {
 
 module.exports = {
 	setDrawer: setDrawer,
+	setID: setID,
 	getUsers: getUsers,
 	setGuessInput: setGuessInput,
 	sendGuess: sendGuess,
@@ -2127,11 +2135,13 @@ var SEND_GUESS = "SEND_GUESS";
 var ADD_MESSAGE = "ADD_MESSAGE";
 var ADD_CLICK = "ADD_CLICK";
 var ADD_PIXS = "ADD_PIXS";
+var SET_ID = 'SET_ID';
 var CLEAR_CANVAS = "CLEAR_CANVAS";
 
 exports.SET_DRAWER = SET_DRAWER;
-exports.ADD_MESSAGE = ADD_MESSAGE;
+exports.SET_ID = SET_ID;
 exports.GET_USERS = GET_USERS;
+exports.ADD_MESSAGE = ADD_MESSAGE;
 exports.SET_GUESS_INPUT = SET_GUESS_INPUT;
 exports.SEND_GUESS = SEND_GUESS;
 exports.ADD_CLICK = ADD_CLICK;
@@ -24905,6 +24915,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// import GuessWord from './'
+
 var App = function (_Component) {
 	_inherits(App, _Component);
 
@@ -24921,6 +24933,7 @@ var App = function (_Component) {
 				'div',
 				null,
 				_react2.default.createElement(_CanvasBoard2.default, null),
+				_react2.default.createElement(GuessWord, null),
 				_react2.default.createElement(_Users2.default, null),
 				_react2.default.createElement(_MessageBox2.default, null)
 			);
@@ -24967,7 +24980,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var mapStateToProps = function mapStateToProps(store) {
   return {
-    isDrawing: store.drawer,
+    drawer: store.drawer,
     clickX: store.canvas.clickX,
     clickY: store.canvas.clickY,
     clickDrag: store.canvas.clickDrag
@@ -25027,8 +25040,8 @@ var CanvasBoard = function (_Component) {
   }, {
     key: 'redraw',
     value: function redraw() {
-      console.log('redraw');
-      console.log(this.props);
+      // console.log('redraw');
+      // console.log(this.props);
       this.state.context.clearRect(0, 0, this.state.context.canvas.width, this.state.context.canvas.height); // Clears the canvas
 
       this.state.context.strokeStyle = "black";
@@ -25080,9 +25093,10 @@ var CanvasBoard = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var canvas = _react2.default.createElement('canvas', { ref: 'canvas', width: 900, height: 900 });
+      console.log(this.props.drawer);
+      var canvas = _react2.default.createElement('canvas', { ref: 'canvas', width: 900, height: 800 });
 
-      if (this.props.isDrawing) {
+      if (this.props.drawer) {
         canvas = _react2.default.createElement('canvas', { onMouseDown: function onMouseDown(e) {
             return _this2.startDraw(e);
           }, onMouseMove: function onMouseMove(e) {
@@ -25091,7 +25105,7 @@ var CanvasBoard = function (_Component) {
             return _this2.stopDraw(e);
           }, onMouseLeave: function onMouseLeave(e) {
             return _this2.stopDraw(e);
-          }, ref: 'canvas', width: 900, height: 900 });
+          }, ref: 'canvas', width: 900, height: 800 });
       }
       return _react2.default.createElement(
         'div',
@@ -25340,12 +25354,13 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var initialState = {
   drawer: false,
+  id: '',
+  name: '',
   users: [],
   correctWord: '',
   messages: [],
   guessInput: '',
   canvas: {
-    // drawer: true,
     clickX: [],
     clickY: [],
     clickDrag: []
@@ -25358,8 +25373,50 @@ var mainReducer = function mainReducer() {
 
   // console.log('From-reducer', action.type);
   switch (action.type) {
+    case types.SET_ID:
+      // const newState = Object.assign({}, state);
+      // newState.id =
+      return Object.assign({}, state, { id: action.id });
+
+    case types.GET_USERS:
+      var users = action.users;
+      var drawer = false;
+      var name = '';
+      var correctWord = '';
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = users[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var user = _step.value;
+
+          // console.log(user);
+          if (user.id === state.id) {
+            drawer = user.drawer;
+            name = user.name;
+            correctWord = user.correctWord;
+          }
+        }
+        // console.log('username', users);
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return Object.assign({}, state, { users: users }, { correctWord: correctWord }, { drawer: drawer }, { name: name });
+
     case types.SET_GUESS_INPUT:
-      // console.log(action.guess);
       return Object.assign({}, state, { guessInput: action.guess });
 
     case types.SEND_GUESS:
@@ -25371,10 +25428,6 @@ var mainReducer = function mainReducer() {
       var messages = JSON.parse(JSON.stringify(state.messages));
       messages.push(action.message);
       return Object.assign({}, state, { messages: messages });
-
-    case types.GET_USERS:
-      var users = action.users;
-      return Object.assign({}, state, { users: users });
 
     case types.ADD_CLICK:
       var canvas_click = JSON.parse(JSON.stringify(state.canvas));
@@ -25436,9 +25489,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const socket = io.connect('http://12.9.9.21:3000');
+// const socket = io.connect('http://10.9.9.21:3000');
 
-// let socket = null;
 var socket = _socket2.default.connect('http://localhost:3000');
 
 var numOfPixels = 0;
@@ -25459,26 +25511,36 @@ function sendPixsAnyway() {
   numOfPixels = 0;;
 }
 
+// https://redux.js.org/advanced/middleware
 function socketMiddleware(store) {
   return function (next) {
     return function (action) {
       var result = next(action);
       // console.log('from socketMiddleware', action.type);
       if (action.type === types.SEND_GUESS) {
-        socket.emit('guess', action.guess);
+        var name = store.getState().name;
+        console.log('name', store.getState());
+        var guess = {
+          guess: action.guess,
+          name: name
+        };
+        socket.emit('guess', guess);
       }
+
       if (action.type === types.ADD_CLICK) {
         numOfPixels++;
         canvasPixs.clickX.push(action.x);
         canvasPixs.clickY.push(action.y);
         canvasPixs.clickDrag.push(action.dragging);
-        if (numOfPixels > 20) {
+        var sendPixs = void 0;
+        if (numOfPixels > 19) {
           socket.emit('canvas', canvasPixs);
           initCanvasPixs();
           numOfPixels = 0;
-          clearTimeout(_sendPixs);
+          clearTimeout(sendPixs);
+        } else {
+          sendPixs = setTimeout(sendPixsAnyway, 500);
         }
-        var _sendPixs = setTimeout(sendPixsAnyway, 2000);
       }
       return result;
     };
@@ -25486,6 +25548,10 @@ function socketMiddleware(store) {
 }
 
 function onEventSocket(store) {
+  socket.on('setID', function (id) {
+    store.dispatch(actions.setID(id));
+  });
+
   socket.on('message', function (message) {
     store.dispatch(actions.addMessage(message));
   });
@@ -25498,7 +25564,7 @@ function onEventSocket(store) {
     store.dispatch(actions.addPixs(canvasPixs.clickX, canvasPixs.clickY, canvasPixs.clickDrag));
   });
 
-  socket.on('endGame', function (guessObj) {
+  socket.on('clearCanvas', function (guessObj) {
     store.dispatch(actions.clearCanvas());
   });
 }
