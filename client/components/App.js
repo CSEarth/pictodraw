@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-// import Canvas from './CanvasBoard';
+import Canvas from './CanvasBoard';
 import MessageBox from './MessageBox';
 import Users from './Users'
 
@@ -8,6 +8,8 @@ class App extends Component {
 		super();
 	}
 
+	// <Users /> 
+	// <MessageBox />
 	render() {
 		return(
 			<div>

@@ -18,7 +18,7 @@ export function socketMiddleware(store) {
   };
 }
 
-export function startSocket(store) {
+export function onEventSocket(store) {
   socket.on('message', message => {
     store.dispatch(actions.addMessage(message));
   });

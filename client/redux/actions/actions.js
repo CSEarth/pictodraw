@@ -1,6 +1,6 @@
 import * as types from './actionTypes'
 
-const setDrawer = () => {
+const setDrawer = (name) => {
 	return {
 		type: types.SET_DRAWER
 	}
@@ -41,10 +41,21 @@ const sendGuess = () => {
 
 
 
-export {
+const addClick = (x, y, dragging) => {
+	return {
+		type: types.ADD_CLICK,
+		x,
+		y,
+		dragging,
+	}
+}
+
+
+module.exports = {
 	setDrawer,
 	getUsers,
 	setGuessInput,
 	sendGuess,
 	addMessage,
+	addClick
 }
