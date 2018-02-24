@@ -9,6 +9,9 @@ const ADD_MESSAGE = "ADD_MESSAGE";
 const ADD_CLICK = "ADD_CLICK";
 const ADD_PIXS = "ADD_PIXS";
 const SET_ID = 'SET_ID';
+const CLEAR_CANVAS = "CLEAR_CANVAS";
+
+
 export {
 	SET_DRAWER,
 	SET_ID,
@@ -17,5 +20,6 @@ export {
 	SET_GUESS_INPUT,
 	SEND_GUESS,
 	ADD_CLICK,
-	ADD_PIXS
+	ADD_PIXS,
+	CLEAR_CANVAS,
 }

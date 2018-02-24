@@ -2,10 +2,9 @@ import io from 'socket.io-client';
 import * as types from './redux/actions/actionTypes';
 import * as actions from './redux/actions/actions';
 
-const socket = io.connect('http://10.9.9.21:3000');
+// const socket = io.connect('http://10.9.9.21:3000');
 
-// let socket = null;
-// const socket = io.connect('http://localhost:3000');
+const socket = io.connect('http://localhost:3000');
 
 let numOfPixels = 0;
 let canvasPixs = {};
@@ -32,6 +31,7 @@ export function socketMiddleware(store) {
     // console.log('from socketMiddleware', action.type);
     if (action.type === types.SEND_GUESS) {
       const name = store.getState().name;
+      console.log('name',store.getState());
       const guess = {
         guess: action.guess,
         name: name
@@ -74,5 +74,9 @@ export function onEventSocket(store) {
   socket.on('canvasUpdate', canvasPixs => {
     store.dispatch(actions.addPixs(canvasPixs.clickX, canvasPixs.clickY, canvasPixs.clickDrag));
   });
+
+  socket.on('clearCanvas', guessObj => {
+    store.dispatch(actions.clearCanvas());
+  })
 
 }

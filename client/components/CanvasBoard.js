@@ -4,8 +4,7 @@ import * as actions from '../redux/actions/actions';
 
 const mapStateToProps = store => {
   return {
-    // isDrawing: store.canvas.drawer,
-    isDrawing: store.drawer,
+    drawer: store.drawer,
     clickX: store.canvas.clickX,
     clickY: store.canvas.clickY,
     clickDrag: store.canvas.clickDrag
@@ -51,6 +50,7 @@ class CanvasBoard extends Component {
 
   redraw(){
     // console.log('redraw');
+    // console.log(this.props);
     this.state.context.clearRect(0, 0, this.state.context.canvas.width, this.state.context.canvas.height); // Clears the canvas
 
     this.state.context.strokeStyle = "black";
@@ -96,12 +96,13 @@ class CanvasBoard extends Component {
   }
 
   render() {
+    console.log(this.props.drawer);
     let canvas = (
-      <canvas ref="canvas" width={900} height={900}/>
+      <canvas ref="canvas" width={900} height={800}/>
     )
 
-    if (this.props.isDrawing) {
-      canvas = ( <canvas onMouseDown={(e)=>this.startDraw(e)} onMouseMove={(e)=>this.draw(e)} onMouseUp={(e)=>this.stopDraw(e)} onMouseLeave={(e)=>this.stopDraw(e)} ref="canvas" width={900} height={900}/> )
+    if (this.props.drawer) {
+      canvas = ( <canvas onMouseDown={(e)=>this.startDraw(e)} onMouseMove={(e)=>this.draw(e)} onMouseUp={(e)=>this.stopDraw(e)} onMouseLeave={(e)=>this.stopDraw(e)} ref="canvas" width={900} height={800}/> )
     }
     return(
       <div id='canvasDiv'>

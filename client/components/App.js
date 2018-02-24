@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Canvas from './CanvasBoard';
 import MessageBox from './MessageBox';
 import Users from './Users'
+// import GuessWord from './'
 
 class App extends Component {
 	constructor(){
@@ -12,6 +13,7 @@ class App extends Component {
 		return(
 			<div>
 			 	<Canvas /> 
+				<GuessWord />
 			 	<Users /> 
 				<MessageBox />  
 			</div> 

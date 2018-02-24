@@ -18,6 +18,8 @@ let drawerIdx = 0;
 clearCanvas();
 
 
+let correctWord = 'dog'; // always save correct word as lowercase
+
 app.use((req,res,next)=>{
   console.log(req.method, req.url);
   next();
@@ -35,9 +37,11 @@ app.get('/build/bundle.js', function (req, res) {
 io.on('connection', function (socket) {
 
   addUsers(socket.id);
-
+  // console.log('numberOfUsers',numberOfUsers);
+  // console.log('drawerIdx',drawerIdx);
   socket.emit('setID', socket.id);
   socket.emit('canvasUpdate', currentDrawing);
+  // console.log('users',users);
   io.emit('allUsers', users);
 
 
@@ -66,14 +70,15 @@ io.on('connection', function (socket) {
 });
 
 function startNewGame() {
-
   clearCanvas();
   pickNewDrawer();
-  io.emit('clearCanvas', canvasPixs);
+  io.emit('clearCanvas');
   io.emit('allUsers', users);
 }
 
 function pickNewDrawer() {
+  users[drawerIdx].drawer = false;
+  users[drawerIdx].correctWord = '';
   drawerIdx++;
   if (drawerIdx > numberOfUsers) drawerIdx = 0;
   currentWord = wordController.getANewWord();

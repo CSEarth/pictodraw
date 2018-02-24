@@ -61,6 +61,11 @@ const addPixs = (clickX, clickY, clickDrag) => {
 	}
 }
 
+const clearCanvas = () => {
+	return {
+		type: types.CLEAR_CANVAS,
+	}
+} 
 
 module.exports = {
 	setDrawer,
@@ -70,5 +75,6 @@ module.exports = {
 	sendGuess,
 	addMessage,
 	addClick,
-	addPixs
+	addPixs,
+	clearCanvas,
 }
