@@ -1,0 +1,45 @@
+h1 {
+	font-family: 'Permanent Marker', cursive;
+	font-size: 48px;
+	margin-bottom: 0;
+	margin-top: 10px;
+}
+
+h2 {
+	margin: 0;
+	font-family: 'Nanum Pen Script', cursive;
+	font-size: 45px;
+}
+
+.gameContainer {
+	display: flex;
+}
+
+#canvasDiv {
+	margin-top: 20px; 
+}
+
+canvas {
+	border: 1px solid black;
+}
+
+.messageContainer {
+	margin-left: 20px; 
+}
+
+.userPanel {
+	margin-top: -10px;
+}
+
+.userBox {
+	padding: 10px 0;
+	font-family: 'Caveat', cursive;
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.drawerBox {
+	color: red;
+
+}
+

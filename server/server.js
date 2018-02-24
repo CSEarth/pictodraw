@@ -33,6 +33,9 @@ app.get('/build/bundle.js', function (req, res) {
   res.sendFile(path.join(__dirname , './../build/bundle.js'));
 });
 
+app.get('/client/styles/styles.css', function (req, res) {
+  res.sendFile(path.join(__dirname , './../client/styles/styles.css'));
+});
 
 io.on('connection', function (socket) {
 

@@ -26,7 +26,7 @@ class Users extends Component {
     const allusers = [];
     for (let i=0; i<this.props.users.length; i++) {
       const info = `${this.props.users[i].name}`
-      const userclass = (this.props.users[i].drawer) ? 'drawerBox' : 'guesserBox'
+      const userclass = (this.props.users[i].drawer) ? 'drawerBox userBox' : 'guesserBox userBox'
       const user = (
           <div className={userclass} key={`user${i}`}>
             {info}

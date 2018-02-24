@@ -98,11 +98,11 @@ class CanvasBoard extends Component {
   render() {
     console.log(this.props.drawer);
     let canvas = (
-      <canvas ref="canvas" width={900} height={800}/>
+      <canvas ref="canvas" width={900} height={450}/>
     )
 
-    if (this.props.drawer) {
-      canvas = ( <canvas onMouseDown={(e)=>this.startDraw(e)} onMouseMove={(e)=>this.draw(e)} onMouseUp={(e)=>this.stopDraw(e)} onMouseLeave={(e)=>this.stopDraw(e)} ref="canvas" width={900} height={800}/> )
+    if (this.props.isDrawing) {
+      canvas = ( <canvas onMouseDown={(e)=>this.startDraw(e)} onMouseMove={(e)=>this.draw(e)} onMouseUp={(e)=>this.stopDraw(e)} onMouseLeave={(e)=>this.stopDraw(e)} ref="canvas" width={900} height={450}/> )
     }
     return(
       <div id='canvasDiv'>
