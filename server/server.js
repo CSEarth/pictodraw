@@ -7,6 +7,7 @@ const http = require('http');
 const app = express();
 const server = http.Server(app);
 const io = socketio(server);
+const word = ['Penghe','Long-Term Memory','a SnowFlake'];
 
 const connections = [];
 const users = [];
@@ -32,6 +33,10 @@ io.on('connection', function (socket) {
   addUsers(socket.id);
   io.emit('allUsers', users);
 
+  socket.on('drawStart', (input) => {
+    position = Math.round(Math.random()*word.length -1)
+    io.emit('word', word[position]); 
+  }); 
 
   socket.on('canvas', (canvasPixs) => {
     // console.log(canvasPix);

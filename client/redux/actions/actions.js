@@ -13,7 +13,6 @@ const addMessage = (message) => {
 	}
 };
 
-
 const getUsers = (users) => {
 	return {
 		type: types.GET_USERS,
@@ -55,6 +54,13 @@ const addPixs = (clickX, clickY, clickDrag) => {
 	}
 }
 
+const wordToDraw = (word) => {
+	return {
+		type: types.WORD_TO_DRAW,
+		word: word
+	}
+}
+
 
 module.exports = {
 	setDrawer,
@@ -63,5 +69,6 @@ module.exports = {
 	sendGuess,
 	addMessage,
 	addClick,
-	addPixs
+	addPixs,
+	wordToDraw
 }

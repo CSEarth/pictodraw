@@ -4,7 +4,7 @@ import * as types from './../actions/actionTypes';
 
 
 const initialState = {
-  drawer: false,
+  drawer: true,
   users: [],
   correctWord: '',
   messages: [],
@@ -72,6 +72,12 @@ const mainReducer = (state=initialState, action) => {
         {canvas}
       );
 
+    case types.WORD_TO_DRAW: 
+      let newWord = action.word; 
+      return Object.assign({},
+        state, 
+        {correctWord: newWord}
+      ); 
 
     default:
       return state;

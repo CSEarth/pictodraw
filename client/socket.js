@@ -25,7 +25,11 @@ function sendPixsAnyway() {
   numOfPixels = 0;;
 }
 
-export function socketMiddleware(store) {
+function drawStart(){
+  socket.emit('drawStart', null)
+}
+
+function socketMiddleware(store) {
   return next => action => {
     const result = next(action);
     // console.log('from socketMiddleware', action.type);
@@ -49,7 +53,12 @@ export function socketMiddleware(store) {
   };
 }
 
-export function onEventSocket(store) {
+function onEventSocket(store) {
+
+  socket.on('word', word => {
+    store.dispatch(actions.wordToDraw(word));
+  })
+
   socket.on('message', message => {
     store.dispatch(actions.addMessage(message));
   });
@@ -61,5 +70,11 @@ export function onEventSocket(store) {
   socket.on('canvasUpdate', canvasPixs => {
     store.dispatch(actions.addPixs(canvasPixs.clickX, canvasPixs.clickY, canvasPixs.clickDrag));
   });
-
 }
+
+export {
+  onEventSocket, 
+  socketMiddleware, 
+  drawStart
+}
+

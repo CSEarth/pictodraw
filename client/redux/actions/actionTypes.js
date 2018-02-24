@@ -8,6 +8,7 @@ const SEND_GUESS = "SEND_GUESS";
 const ADD_MESSAGE = "ADD_MESSAGE";
 const ADD_CLICK = "ADD_CLICK";
 const ADD_PIXS = "ADD_PIXS";
+const WORD_TO_DRAW = "WORD_TO_DRAW";
 
 export {
 	SET_DRAWER,
@@ -16,5 +17,6 @@ export {
 	SET_GUESS_INPUT,
 	SEND_GUESS,
 	ADD_CLICK,
-	ADD_PIXS
+	ADD_PIXS,
+	WORD_TO_DRAW
 }
