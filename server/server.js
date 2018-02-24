@@ -103,7 +103,7 @@ function addUsers(id) {
   const newUser = {
     id: id,
     name: `User ${numberOfUsers}`,
-    correctWord: currentWord,
+    correctWord: correctWord,
     drawer
   }
   users.push(newUser);

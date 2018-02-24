@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Canvas from './CanvasBoard';
 import MessageBox from './MessageBox';
 import Users from './Users'
-// import GuessWord from './'
+import GuessWord from './GuessWord'
 
 class App extends Component {
 	constructor(){
