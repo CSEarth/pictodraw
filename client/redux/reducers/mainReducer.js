@@ -67,7 +67,8 @@ const mainReducer = (state=initialState, action) => {
 
     case types.ADD_MESSAGE:
       const messages = JSON.parse(JSON.stringify(state.messages));
-      messages.push(action.message);
+      messages.unshift(action.message);
+      if (messages.length > 7) messages.pop();
       return Object.assign({},
         state,
         {messages: messages}

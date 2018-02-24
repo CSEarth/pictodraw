@@ -24907,6 +24907,10 @@ var _Users = __webpack_require__(95);
 
 var _Users2 = _interopRequireDefault(_Users);
 
+var _GuessWord = __webpack_require__(122);
+
+var _GuessWord2 = _interopRequireDefault(_GuessWord);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24914,8 +24918,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import GuessWord from './'
 
 var App = function (_Component) {
 	_inherits(App, _Component);
@@ -24933,7 +24935,7 @@ var App = function (_Component) {
 				'div',
 				null,
 				_react2.default.createElement(_CanvasBoard2.default, null),
-				_react2.default.createElement(GuessWord, null),
+				_react2.default.createElement(_GuessWord2.default, null),
 				_react2.default.createElement(_Users2.default, null),
 				_react2.default.createElement(_MessageBox2.default, null)
 			);
@@ -25426,7 +25428,8 @@ var mainReducer = function mainReducer() {
 
     case types.ADD_MESSAGE:
       var messages = JSON.parse(JSON.stringify(state.messages));
-      messages.push(action.message);
+      messages.unshift(action.message);
+      if (messages.length > 7) messages.pop();
       return Object.assign({}, state, { messages: messages });
 
     case types.ADD_CLICK:
@@ -25489,9 +25492,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const socket = io.connect('http://10.9.9.21:3000');
+var socket = _socket2.default.connect('http://10.9.9.21:3000');
 
-var socket = _socket2.default.connect('http://localhost:3000');
+// const socket = io.connect('http://localhost:3000');
 
 var numOfPixels = 0;
 var canvasPixs = {};
@@ -25519,7 +25522,7 @@ function socketMiddleware(store) {
       // console.log('from socketMiddleware', action.type);
       if (action.type === types.SEND_GUESS) {
         var name = store.getState().name;
-        console.log('name', store.getState());
+        console.log('store', store.getState());
         var guess = {
           guess: action.guess,
           name: name
@@ -28781,6 +28784,76 @@ Backoff.prototype.setJitter = function(jitter){
 };
 
 
+
+/***/ }),
+/* 122 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(11);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapStateToProps = function mapStateToProps(store) {
+  return {
+    correctWord: store.correctWord
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {};
+};
+
+var GuessWord = function (_Component) {
+  _inherits(GuessWord, _Component);
+
+  function GuessWord(props) {
+    _classCallCheck(this, GuessWord);
+
+    return _possibleConstructorReturn(this, (GuessWord.__proto__ || Object.getPrototypeOf(GuessWord)).call(this, props));
+  }
+
+  _createClass(GuessWord, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'wordBox' },
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'strong',
+            null,
+            this.props.correctWord
+          )
+        )
+      );
+    }
+  }]);
+
+  return GuessWord;
+}(_react.Component);
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(GuessWord);
 
 /***/ })
 /******/ ]);
