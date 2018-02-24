@@ -25,11 +25,12 @@ class MessageBox extends Component {
 
     const allmessages = [];
     for (let i=0; i<this.props.messages.length; i++) {
-      const str = `${this.props.messages[i].user}: ${this.props.messages[i].message}`;
+      const user = this.props.messages[i].user;
+      const word = this.props.messages[i].message;
       const message = (
-          <ul key={`message${i}`}>
-            {str}
-          </ul>
+          <li key={`message${i}`}>
+            {user} : <span>{word}</span>
+          </li>
         )
       allmessages.push(message);
     }

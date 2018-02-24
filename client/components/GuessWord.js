@@ -20,7 +20,7 @@ class GuessWord extends Component {
  render() {
    return(
      <div className='wordBox'>
-         <p><strong>{this.props.correctWord}</strong></p>
+     			<h4 className="selectedWord">Draw: <strong>{this.props.correctWord}</strong></h4>
      </div>
    );
  }

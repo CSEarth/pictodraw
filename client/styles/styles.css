@@ -11,6 +11,11 @@ h2 {
 	font-size: 45px;
 }
 
+h4 {
+	font-family: 'Nanum Pen Script', cursive;
+	font-size: 28px;
+}
+
 .gameContainer {
 	display: flex;
 }
@@ -40,6 +45,35 @@ canvas {
 
 .drawerBox {
 	color: red;
+}
 
+#displayChat {
+	font-family: 'Caveat', cursive;
+}
+
+#displayChat ul {
+	padding-left: 0;
+}
+
+#displayChat li {
+	list-style: none;
+	font-size: 20px;
+	font-weight: 400;
+	padding-bottom: 5px;
+}
+
+#displayChat li span {
+	font-weight: 700;
+}
+
+.selectedWord {
+	margin: 10px 0;
+}
+
+.selectedWord:after {
+	content: '';
+	width: 100%;
+	display: block;
+	border-bottom: 1px solid black;
 }
 

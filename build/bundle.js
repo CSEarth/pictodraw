@@ -25196,11 +25196,18 @@ var MessageBox = function (_Component) {
 
       var allmessages = [];
       for (var i = 0; i < this.props.messages.length; i++) {
-        var str = this.props.messages[i].user + ': ' + this.props.messages[i].message;
+        var user = this.props.messages[i].user;
+        var word = this.props.messages[i].message;
         var message = _react2.default.createElement(
-          'ul',
+          'li',
           { key: 'message' + i },
-          str
+          user,
+          ' : ',
+          _react2.default.createElement(
+            'span',
+            null,
+            word
+          )
         );
         allmessages.push(message);
       }
@@ -25369,8 +25376,9 @@ var GuessWord = function (_Component) {
         'div',
         { className: 'wordBox' },
         _react2.default.createElement(
-          'p',
-          null,
+          'h4',
+          { className: 'selectedWord' },
+          'Draw: ',
           _react2.default.createElement(
             'strong',
             null,
