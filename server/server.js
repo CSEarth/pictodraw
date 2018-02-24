@@ -12,6 +12,8 @@ const connections = [];
 const users = [];
 let idxUser = 1;
 
+let correctWord = 'dog'; // always save correct word as lowercase
+
 app.use((req,res,next)=>{
   console.log(req.method, req.url);
   next();
@@ -46,6 +48,7 @@ io.on('connection', function (socket) {
       message: guess
     };
     io.emit('message', message);
+    checkGuess(message);
   });
 
   socket.on('disconnect', function (reason) {
@@ -74,6 +77,14 @@ function deleteUser(reason, id) {
   const index = connections.indexOf(id);
   connections.splice(index, 1);
   users.splice(index, 1);
+}
+
+function checkGuess(guessObj) {
+  // replace special chars and trim
+  const guess = guessObj.message.toLowerCase(); 
+  if (correctWord === guess) {
+    io.emit('endGame', guessObj);
+  }
 }
 
 

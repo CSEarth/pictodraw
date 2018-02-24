@@ -62,4 +62,8 @@ export function onEventSocket(store) {
     store.dispatch(actions.addPixs(canvasPixs.clickX, canvasPixs.clickY, canvasPixs.clickDrag));
   });
 
+  socket.on('endGame', guessObj => {
+    store.dispatch(actions.clearCanvas());
+  })
+
 }
