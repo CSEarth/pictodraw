@@ -4,7 +4,7 @@ import * as types from './../actions/actionTypes';
 
 
 const initialState = {
-  drawer: false,
+  drawer: true,
   id: '',
   name: '',
   users: [],
