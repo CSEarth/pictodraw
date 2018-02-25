@@ -119,12 +119,17 @@ function deleteUser(reason, id) {
   if (drawerIdx > index) drawerIdx--;
   connections.splice(index, 1);
   users.splice(index, 1);
-  if (drawerIdx === index) {
+  numberOfUsers--;
+  if (drawerIdx === index && numberOfUsers !== 0) {
+    drawerIdx--;
     currentWord = wordController.getANewWord();
     users[drawerIdx].drawer = true;
     users[drawerIdx].correctWord = currentWord;
   }
-  numberOfUsers--;
+  if (numberOfUsers === 0) {
+    users = [];
+    drawerIdx = 0;
+  }
 }
 
 function clearCanvas() {
