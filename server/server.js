@@ -8,20 +8,14 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
+
 const connections = [];
 let currentDrawing = {};
 let currentWord = wordController.getANewWord();
-const users = [];
+let users = [];
 let numberOfUsers = 0;
 let drawerIdx = 0;
 clearCanvas();
-
-
-
-// app.use((req,res,next)=>{
-//   console.log(req.method, req.url);
-//   next();
-// });
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname , './../index.html'));
@@ -127,7 +121,7 @@ function deleteUser(reason, id) {
     users[drawerIdx].correctWord = currentWord;
   }
   if (numberOfUsers === 0) {
-    users = [];
+    users = []; // maybe not necessary
     drawerIdx = 0;
   }
 }
