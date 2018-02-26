@@ -50,6 +50,7 @@ export function socketMiddleware(store) {
         numOfPixels = 0;
         clearTimeout(sendPixs);
       } else {
+        clearTimeout(sendPixs);
         sendPixs = setTimeout(sendPixsAnyway,500);
       }
     }
