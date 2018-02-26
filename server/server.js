@@ -1,62 +1,145 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const mongoose = require('mongoose');
-
-const kimiRouter = require('./kimiRouter');
-// const kimiModel = require('./../penguin/kimiModel');
-const cookieController = require('./cookie/cookieController');
-const userController = require('./user/userController');
-
+const socketio = require('socket.io');
+const http = require('http');
+const wordController = require('./wordController');
 
 const app = express();
+const server = http.Server(app);
+const io = socketio(server);
 
-const mongoURI =  'mongodb://localhost/cloudPenguin';
-mongoose.connect(mongoURI);
-mongoose.connection.once('open', () => {
-  console.log('Connected to Database');
+
+const connections = [];
+let currentDrawing = {};
+let currentWord = wordController.getANewWord();
+let users = [];
+let numberOfUsers = 0;
+let drawerIdx = 0;
+clearCanvas();
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname , './../index.html'));
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use((req,res,next)=>{
-  console.log(req.method, req.url);
-  next();
+app.get('/client/styles/styles.css', function (req, res) {
+  res.sendFile(path.join(__dirname , './../client/styles/styles.css'));
 });
 
-app.use('/kimi', kimiRouter);
-
-
-app.get('/', (req, res) => {
-  res.set("Content-Type", "text/html; charset=utf-8");
-  res.sendFile(path.join(__dirname , './../client/login.html'));
-});
-app.get(/.css$/, (req, res) => {
-  res.set("Content-Type", "text/css; charset=utf-8");
-  res.sendFile(path.join(__dirname , `./../client${req.url}`));
-});
-app.get('/build/bundle.js', (req, res) => {
-  res.set("Content-Type", "text/css; charset=utf-8");
-  res.sendFile(path.join(__dirname , `./../build/bundle.js`));
+app.get('/build/bundle.js', function (req, res) {
+  res.sendFile(path.join(__dirname , './../build/bundle.js'));
 });
 
 
-// app.get('/style.css', (req, res) => {
-//   res.set("Content-Type", "text/css; charset=utf-8");
-//   res.sendFile(path.join(__dirname , './../client/style.css'));
-// });
-app.get('/signup', (req, res) => {
-  res.set("Content-Type", "text/html; charset=utf-8");
-  res.sendFile(path.join(__dirname , './../client/signup.html'));
+io.on('connection', function (socket) {
+
+  addUsers(socket.id);
+  // console.log('numberOfUsers',numberOfUsers);
+  // console.log('drawerIdx',drawerIdx);
+  socket.emit('setID', socket.id);
+  socket.emit('canvasUpdate', currentDrawing);
+  // console.log('users',users);
+  io.emit('allUsers', users);
+
+
+  socket.on('canvas', (canvasPixs) => {
+    updataDrawing(canvasPixs);
+    socket.broadcast.emit('canvasUpdate', canvasPixs);
+  });
+
+  socket.on('guess', (guess) => {
+    const str = `${guess.name}: ${guess.guess}`;
+    console.log(str);
+    const newMessage = {
+      user: guess.name,
+      message: guess.guess
+    };
+    if (isGuessCorrect(guess.guess)) {
+      newMessage.message += '        CORRECT ANSWER! Cong!';
+      startNewGame();
+    }
+    io.emit('message', newMessage);
+  });
+
+  socket.on('disconnect', function (reason) {
+    deleteUser(reason, socket.id);
+    io.emit('allUsers', users);
+  });
 });
 
-app.post('/signup', userController.createUser,
-                    cookieController.setSSIDCookie);
-app.post('/login', userController.verifyUser,
-                   cookieController.setSSIDCookie);
+function startNewGame() {
+  clearCanvas();
+  pickNewDrawer();
+  io.emit('clearCanvas');
+  io.emit('allUsers', users);
+}
+
+function pickNewDrawer() {
+  users[drawerIdx].drawer = false;
+  users[drawerIdx].correctWord = '';
+  drawerIdx++;
+  if (drawerIdx >= numberOfUsers) drawerIdx = 0;
+  currentWord = wordController.getANewWord();
+  users[drawerIdx].drawer = true;
+  users[drawerIdx].correctWord = currentWord;
+}
+
+function isGuessCorrect(guess) {
+  return guess.toLowerCase() === currentWord.toLowerCase();
+}
+
+
+function addUsers(id) {
+  console.log(id,'  joined in');
+  connections.push(id);
+  let drawer = false;
+  let correctWord = '';
+  if (numberOfUsers === 0) {
+    drawer = true;
+    correctWord = currentWord;
+  }
+  const newUser = {
+    id: id,
+    name: `User ${numberOfUsers}`,
+    correctWord: correctWord,
+    drawer
+  }
+  users.push(newUser);
+  numberOfUsers++;
+}
+
+function deleteUser(reason, id) {
+  console.log('disconneted', id, reason);
+  const index = connections.indexOf(id);
+  if (drawerIdx > index) drawerIdx--;
+  connections.splice(index, 1);
+  users.splice(index, 1);
+  numberOfUsers--;
+  if (drawerIdx === index && numberOfUsers !== 0) {
+    drawerIdx--;
+    currentWord = wordController.getANewWord();
+    users[drawerIdx].drawer = true;
+    users[drawerIdx].correctWord = currentWord;
+  }
+  if (numberOfUsers === 0) {
+    users = []; // maybe not necessary
+    drawerIdx = 0;
+  }
+}
+
+function clearCanvas() {
+  currentDrawing = {
+       clickX: [],
+       clickY: [],
+    clickDrag: []
+  }
+}
+
+function updataDrawing(canvasPixs) {
+  currentDrawing.clickX = currentDrawing.clickX.concat(canvasPixs.clickX);
+  currentDrawing.clickY = currentDrawing.clickY.concat(canvasPixs.clickY);
+  currentDrawing.clickDrag = currentDrawing.clickDrag.concat(canvasPixs.clickDrag);
+}
 
 
 
-
-app.listen(3000);
+server.listen(8000);

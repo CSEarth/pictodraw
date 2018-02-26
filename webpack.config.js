@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 const entry = [
-  './react-component/app.js'
+  './client/index.js'
 ];
 const output = {
   path: path.join(__dirname, '/build'),
@@ -12,6 +12,9 @@ const output = {
 module.exports = {
   entry,
   output,
+  node: {
+    fs: 'empty'
+  },
   devServer: {
     contentBase: path.join(__dirname),
     watchContentBase: true
@@ -21,7 +24,9 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include:[
-          path.join(__dirname, "/react-component")
+          path.join(__dirname, "/client"),
+          path.join(__dirname, "/client/**"),
+          // path.join(__dirname, "/client/components")
         ],
         exclude: /node_modules/,
         loader: 'babel-loader',
