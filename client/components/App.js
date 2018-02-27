@@ -1,8 +1,9 @@
 import React, { Component } from 'react'; 
 import Canvas from './CanvasBoard';
 import MessageBox from './MessageBox';
-import Users from './Users'
-import GuessWord from './GuessWord'
+import Users from './Users';
+import CorrectWord from './CorrectWord';
+import Palette from './Palette';
 
 class App extends Component {
 	constructor(){
@@ -12,9 +13,10 @@ class App extends Component {
 	render() {
 		return(
 			<div className="gameContainer">
+				{/* <Palette /> */}
 			 	<Canvas /> 
 			 	<section className="messageContainer">
-					<GuessWord /> 
+					<CorrectWord /> 
 			 		<h2>Players</h2>
 				 	<Users /> 
 					<MessageBox />  

@@ -8,7 +8,6 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
-
 const connections = [];
 let currentDrawing = {};
 let currentWord = wordController.getANewWord();
@@ -29,17 +28,12 @@ app.get('/build/bundle.js', function (req, res) {
   res.sendFile(path.join(__dirname , './../build/bundle.js'));
 });
 
-
 io.on('connection', function (socket) {
 
   addUsers(socket.id);
-  // console.log('numberOfUsers',numberOfUsers);
-  // console.log('drawerIdx',drawerIdx);
   socket.emit('setID', socket.id);
   socket.emit('canvasUpdate', currentDrawing);
-  // console.log('users',users);
   io.emit('allUsers', users);
-
 
   socket.on('canvas', (canvasPixs) => {
     updataDrawing(canvasPixs);

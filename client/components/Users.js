@@ -5,7 +5,7 @@ import * as actions from '../redux/actions/actions';
 
 const mapStateToProps = store => {
   return {
-    users: store.users,
+    users: store.users
   }
 };
 
@@ -25,11 +25,12 @@ class Users extends Component {
   render() {
     const allusers = [];
     for (let i=0; i<this.props.users.length; i++) {
-      const info = `${this.props.users[i].name}`
-      const userclass = (this.props.users[i].drawer) ? 'drawerBox userBox' : 'guesserBox userBox'
+      const info = `${this.props.users[i].name}`;
+      const userclass = (this.props.users[i].drawer) ? 'drawerBox userBox' : 'guesserBox userBox';
+      const isDrawing = (this.props.users[i].drawer) ? ' is drawing' : ''
       const user = (
           <div className={userclass} key={`user${i}`}>
-            {info}
+            {info} {isDrawing}
           </div>
         )
       allusers.push(user);
