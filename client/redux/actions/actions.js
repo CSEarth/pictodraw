@@ -20,20 +20,21 @@ const getUsers = (users) => {
 	}
 };
 
-const addMessage = (message) => {
+const addMessage = (message_log) => {
 	return {
 		type: types.ADD_MESSAGE,
-		message
+		// The message log contains both the message and the user name
+		message_log
 	}
 };
 
-const setGuessInput = () => {
-	const guess = document.getElementsByTagName('input').input.value;
-	return {
-	  type: types.SET_GUESS_INPUT,
-	  guess: guess,
-	}
-};
+// const setGuessInput = () => {
+// 	const guess = document.getElementsByTagName('input').input.value;
+// 	return {
+// 	  type: types.SET_GUESS_INPUT,
+// 	  guess: guess,
+// 	}
+// };
 
 const sendGuess = () => {
 	const guess = document.getElementsByTagName('input').input.value;
@@ -71,7 +72,7 @@ module.exports = {
 	setDrawer,
 	setID,
 	getUsers,
-	setGuessInput,
+	// setGuessInput,
 	sendGuess,
 	addMessage,
 	addClick,

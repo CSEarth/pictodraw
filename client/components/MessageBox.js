@@ -5,6 +5,8 @@ import * as actions from '../redux/actions/actions';
 
 const mapStateToProps = store => ({
   messages: store.messages,
+  drawer: store.drawer,
+  guessInput: store.guessInput
 });
 
 const mapDispatchToProps = dispatch => {
@@ -19,6 +21,13 @@ const mapDispatchToProps = dispatch => {
 class MessageBox extends Component {
   constructor(props) {
     super(props);
+    this.sendOnEnter = this.sendOnEnter.bind(this);
+  }
+
+  sendOnEnter(e) {
+    if (e.keyCode === 13) { 
+      this.props.sendGuess();
+    }
   }
 
   render() {
@@ -35,15 +44,35 @@ class MessageBox extends Component {
       allmessages.push(message);
     }
 
-    return(
-      <div className='chatBox'>
-        <div id='inputGuess'>
-          <input id="input" type="text" onChange={this.props.setGuessInput}></input>
-          <button onClick={this.props.sendGuess}>Send</button>
-        </div>
+    let messageBox = (
+      <div> 
+        <h4>Guesses</h4>
         <div id='displayChat'>
           <ul>{allmessages}</ul>
         </div>
+      </div>
+    )
+
+    if(!this.props.drawer) {
+      messageBox = (
+        <div>
+          {/* <h4>Enter Guess Below</h4> */}
+          <div id='inputGuess'>
+            <h4>Guesses</h4>
+            <input id="input" type="text" placeholder="Enter Your Guess Here" onKeyDown={this.sendOnEnter}></input>
+            <button onClick={this.props.sendGuess}>Send</button>
+          </div>
+          <div id='displayChat'>
+            <ul>{allmessages}</ul>
+          </div>
+        </div>
+      )
+      // this.props.guessInput
+    }
+
+    return(
+      <div className='messageBox'>
+        {messageBox}
       </div>
     );
   }
