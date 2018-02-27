@@ -8,11 +8,9 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
-const connections = [];
 let currentDrawing = {};
 let currentWord = wordController.getANewWord();
 let users = [];
-let numberOfUsers = 0;
 let drawerIdx = 0;
 clearCanvas();
 
@@ -61,9 +59,11 @@ io.on('connection', function (socket) {
 });
 
 function startNewGame() {
+
   clearCanvas();
   pickNewDrawer();
-  io.emit('clearCanvas');
+
+  //io.emit('clearCanvas');
   io.emit('allUsers', users);
 }
 
@@ -71,7 +71,7 @@ function pickNewDrawer() {
   users[drawerIdx].drawer = false;
   users[drawerIdx].correctWord = '';
   drawerIdx++;
-  if (drawerIdx >= numberOfUsers) drawerIdx = 0;
+  if (drawerIdx >= users.length) drawerIdx = 0;
   currentWord = wordController.getANewWord();
   users[drawerIdx].drawer = true;
   users[drawerIdx].correctWord = currentWord;
@@ -84,48 +84,54 @@ function isGuessCorrect(guess) {
 
 function addUsers(id) {
   console.log(id,'  joined in');
-  connections.push(id);
+  
   let drawer = false;
   let correctWord = '';
-  if (numberOfUsers === 0) {
+  if (users.length === 0) {
     drawer = true;
     correctWord = currentWord;
   }
   const newUser = {
     id: id,
-    name: `User ${numberOfUsers}`,
+    name: `User ${users.length+1}`,
     correctWord: correctWord,
     drawer
   }
   users.push(newUser);
-  numberOfUsers++;
 }
 
 function deleteUser(reason, id) {
   console.log('disconneted', id, reason);
-  const index = connections.indexOf(id);
-  if (drawerIdx > index) drawerIdx--;
-  connections.splice(index, 1);
+
+  const index = users.indexOf(users.find((user)=> user.id === id));
   users.splice(index, 1);
-  numberOfUsers--;
-  if (drawerIdx === index && numberOfUsers !== 0) {
-    drawerIdx--;
+ 
+  if (drawerIdx === index && users.length !== 0) {
+    clearCanvas();
+    if (drawerIdx >= users.length) drawerIdx = 0;
+
     currentWord = wordController.getANewWord();
     users[drawerIdx].drawer = true;
     users[drawerIdx].correctWord = currentWord;
   }
-  if (numberOfUsers === 0) {
+
+  if (drawerIdx > index) drawerIdx--;
+
+  if (users.length === 0) {
     users = []; // maybe not necessary
     drawerIdx = 0;
   }
 }
 
 function clearCanvas() {
-  currentDrawing = {
-       clickX: [],
-       clickY: [],
-    clickDrag: []
-  }
+  setTimeout(function(){ 
+    io.emit('clearCanvas');
+    currentDrawing = {
+      clickX: [],
+      clickY: [],
+      clickDrag: []
+    }
+   }, 2400);
 }
 
 function updataDrawing(canvasPixs) {
@@ -133,7 +139,5 @@ function updataDrawing(canvasPixs) {
   currentDrawing.clickY = currentDrawing.clickY.concat(canvasPixs.clickY);
   currentDrawing.clickDrag = currentDrawing.clickDrag.concat(canvasPixs.clickDrag);
 }
-
-
 
 server.listen(8000);
