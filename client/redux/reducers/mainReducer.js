@@ -51,11 +51,11 @@ const mainReducer = (state=initialState, action) => {
         {name: name}
       );
 
-    case types.SET_GUESS_INPUT:
-      return Object.assign({},
-        state,
-        {guessInput: action.guess}
-      );
+    // case types.SET_GUESS_INPUT:
+    //   return Object.assign({},
+    //     state,
+    //     {guessInput: action.guess}
+    //   );
 
     case types.SEND_GUESS:
       const input = document.getElementsByTagName('input').input;
@@ -67,8 +67,10 @@ const mainReducer = (state=initialState, action) => {
 
     case types.ADD_MESSAGE:
       const messages = JSON.parse(JSON.stringify(state.messages));
-      messages.unshift(action.message);
-      if (messages.length > 7) messages.pop();
+      // If the enteredd message is not empty add it to the list
+      if(action.message_log.message) messages.unshift(action.message_log);
+      // The list should contain at most 6 messages
+      if (messages.length > 5) messages.pop();
       return Object.assign({},
         state,
         {messages: messages}

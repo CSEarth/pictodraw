@@ -40,7 +40,7 @@ class CanvasBoard extends Component {
 
   redraw(){
     this.state.context.clearRect(0, 0, this.state.context.canvas.width, this.state.context.canvas.height); // Clears the canvas
-
+    
     this.state.context.strokeStyle = "black";
     this.state.context.lineJoin = "round";
     this.state.context.lineWidth = 5;
